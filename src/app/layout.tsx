@@ -6,7 +6,7 @@ import { RootInfrastructure } from '@shared/infrastructure/root.infrastructure';
 const noto_sans = Noto_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Storesy',
+  title: 'Storesy Admin',
   description:
     'This versatile platform puts you in full control, providing a comprehensive suite of tools and features to manage every aspect of your business with ease and efficiency.',
 };
