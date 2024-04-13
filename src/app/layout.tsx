@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Noto_Sans } from 'next/font/google';
 
-import './globals.css';
+import { RootInfrastructure } from '@shared/infrastructure/root.infrastructure';
 
-const inter = Inter({ subsets: ['latin'] });
+const noto_sans = Noto_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Storesy | Dashboard',
+  title: 'Storesy Admin',
   description:
     'This versatile platform puts you in full control, providing a comprehensive suite of tools and features to manage every aspect of your business with ease and efficiency.',
 };
@@ -17,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="h-full">
+      <body className={`${noto_sans.className} h-full antialiased`}>
+        <RootInfrastructure>{children}</RootInfrastructure>
+      </body>
     </html>
   );
 }

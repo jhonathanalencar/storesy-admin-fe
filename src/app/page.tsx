@@ -1,3 +1,5 @@
-export default function Home() {
-  return <h1>Mikasa</h1>;
+import { homeRoutes } from '@subdomains/home/routes';
+
+export default function HomePage() {
+  return <homeRoutes.HOME />;
 }
