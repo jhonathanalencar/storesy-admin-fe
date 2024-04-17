@@ -1,10 +1,10 @@
-import { AppLayout } from '@shared/layouts/app.layout';
 import { DashboardInterface } from '../interfaces/dashboard.interface';
+import { DashboardLayout } from '@shared/layouts/dashboard.layout';
 
 export function DashboardContainer() {
   return (
-    <AppLayout>
+    <DashboardLayout>
       <DashboardInterface />
-    </AppLayout>
+    </DashboardLayout>
   );
 }
