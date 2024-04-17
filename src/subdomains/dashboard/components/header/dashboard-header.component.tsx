@@ -13,15 +13,23 @@ export function DashboardHeader() {
         </div>
         <div className="flex justify-end gap-2 [grid-area:user]">
           <div className="flex flex-col items-end">
-            <span className="text-sm font-semibold leading-[1.125rem] sm:text-lg">
+            <strong
+              aria-label="username"
+              className="text-sm font-semibold leading-[1.125rem] sm:text-lg"
+            >
               Alice
-            </span>
-            <span className="text-xs text-zinc-300 sm:text-sm">
-              alice@storesy.com
-            </span>
+            </strong>
+            <address
+              aria-label="user email"
+              className="not-italic leading-none"
+            >
+              <span className="text-xs text-zinc-300 sm:text-sm">
+                alice@storesy.com
+              </span>
+            </address>
           </div>
           <div className="h-12 w-12 rounded-full bg-zinc-700">
-            <img src="" alt="" />
+            <img src="" alt="user profile" />
           </div>
         </div>
       </div>
