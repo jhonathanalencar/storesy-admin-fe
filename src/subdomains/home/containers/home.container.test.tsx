@@ -4,7 +4,7 @@ import { HomeContainer } from './home.container';
 
 describe('<HomeContainer>', () => {
   describe('Render', () => {
-    it('should rend a main element', () => {
+    it('should render a main element', () => {
       render(<HomeContainer />);
 
       const main = screen.getByRole('main');
