@@ -1,4 +1,4 @@
-import { EllipsisIcon } from 'lucide-react';
+import { EllipsisIcon, SearchIcon } from 'lucide-react';
 
 export function ProductsInterface() {
   return (
@@ -6,9 +6,22 @@ export function ProductsInterface() {
       aria-label="Product management"
       className="mx-auto w-full max-w-7xl p-2 md:p-4"
     >
-      <h2>Products</h2>
-      <input type="text" placeholder="Search" />
-      <div className="overflow-x-auto rounded border border-zinc-800 px-2 pt-3">
+      <h2 className="text-xl font-bold">Products</h2>
+      <div className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950">
+        <SearchIcon className="h-4 w-4 text-green-400" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="h-6 w-48 rounded bg-transparent text-sm text-zinc-200 outline-none placeholder:text-sm"
+        />
+      </div>
+      <div className="overflow-x-auto rounded border border-zinc-800 px-2 py-3">
+        <div>
+          <span>Deselect all</span>
+          <button>Disable users</button>
+          <button>Delete users</button>
+          <span>2 selected</span>
+        </div>
         <table className="w-full min-w-[42rem] border-collapse">
           <caption className="sr-only">Current Products</caption>
           <thead className="border-b border-zinc-800 bg-zinc-950">
@@ -93,6 +106,9 @@ export function ProductsInterface() {
                   <button className="inline-flex h-8 w-8 items-center justify-center rounded border border-zinc-700 hover:bg-zinc-800">
                     <EllipsisIcon />
                   </button>
+                  <button>edit product</button>
+                  <button>delete product</button>
+                  <button>release product</button>
                 </div>
               </td>
             </tr>
