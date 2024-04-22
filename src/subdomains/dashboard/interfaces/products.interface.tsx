@@ -1,5 +1,7 @@
 import { EllipsisIcon, SearchIcon } from 'lucide-react';
 
+import { Checkbox } from '@shared/components/checkbox.component';
+
 export function ProductsInterface() {
   return (
     <section
@@ -35,7 +37,7 @@ export function ProductsInterface() {
           <thead className="border-b border-zinc-800 bg-zinc-950">
             <tr>
               <th className="p-2 text-left text-sm">
-                <input type="checkbox" />
+                <Checkbox />
               </th>
               <th className="p-2 text-left text-sm"></th>
               <th className="p-2 text-left text-sm">Name</th>
@@ -51,7 +53,7 @@ export function ProductsInterface() {
           <tbody>
             <tr className="h-[4.25rem] border-b border-zinc-800 bg-zinc-950">
               <td className="p-2 text-sm font-medium text-zinc-300">
-                <input type="checkbox" />
+                <Checkbox />
               </td>
               <td className="p-2 text-sm font-medium text-zinc-300">
                 <div className="h-12 w-12 rounded-full bg-zinc-700" />
@@ -89,7 +91,7 @@ export function ProductsInterface() {
             </tr>
             <tr className="h-[4.25rem] border-b border-zinc-800 bg-zinc-950">
               <td className="p-2 text-sm font-medium text-zinc-300">
-                <input type="checkbox" />
+                <Checkbox />
               </td>
               <td className="p-2 text-sm font-medium text-zinc-300">
                 <div className="h-12 w-12 rounded-full bg-zinc-700" />
