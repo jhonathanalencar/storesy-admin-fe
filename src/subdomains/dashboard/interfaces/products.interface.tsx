@@ -16,11 +16,19 @@ export function ProductsInterface() {
         />
       </div>
       <div className="overflow-x-auto rounded border border-zinc-800 px-2 py-3">
-        <div>
-          <span>Deselect all</span>
-          <button>Disable users</button>
-          <button>Delete users</button>
-          <span>2 selected</span>
+        <div className="flex h-10 items-center justify-between p-2">
+          <button className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline">
+            Deselect all
+          </button>
+          <div className="flex items-center gap-4">
+            <button className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline">
+              Disable products
+            </button>
+            <button className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline">
+              Delete products
+            </button>
+            <span className="text-sm font-medium">2 selected</span>
+          </div>
         </div>
         <table className="w-full min-w-[42rem] border-collapse">
           <caption className="sr-only">Current Products</caption>
