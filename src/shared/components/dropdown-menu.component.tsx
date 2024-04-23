@@ -17,9 +17,8 @@ export function DropdownMenu() {
 
       <DropdownMenuPrimitive.Portal>
         <DropdownMenuPrimitive.Content
-          className="min-w-28 rounded bg-zinc-800 p-2 text-zinc-200 shadow-md"
+          className="data-[state=open]:animate-slide-down-and-fade data-[state=closed]:animate-slide-up-and-fade-out min-w-28 rounded bg-zinc-800 p-2 text-zinc-200 shadow-md"
           sideOffset={5}
-          avoidCollisions
         >
           <DropdownMenuPrimitive.Item className="flex h-7 select-none items-center rounded px-1 text-sm font-medium capitalize leading-none outline-none data-[highlighted]:bg-orange-400 data-[highlighted]:text-zinc-800">
             edit

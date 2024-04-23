@@ -16,6 +16,25 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        fadeOut: {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
+        slideDownAndFade: {
+          from: { opacity: '0', transform: 'translateY(-10%)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUpAndFadeOut: {
+          from: { opacity: '1', transform: 'translateY(0)' },
+          to: { opacity: '0', transform: 'translateY(-10%)' },
+        },
+      },
+      animation: {
+        'fade-out': 'fadeOut 300ms ease-in-out',
+        'slide-down-and-fade': 'slideDownAndFade 400ms ease-in-out',
+        'slide-up-and-fade-out': 'slideUpAndFadeOut 300ms ease-in-out',
+      },
     },
   },
 };
