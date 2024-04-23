@@ -1,6 +1,7 @@
-import { EllipsisIcon, SearchIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 
 import { Checkbox } from '@shared/components/checkbox.component';
+import { DropdownMenu } from '@shared/components/dropdown-menu.component';
 
 export function ProductsInterface() {
   return (
@@ -83,9 +84,7 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <button className="flex h-8 w-8 items-center justify-center rounded border border-zinc-700 hover:bg-zinc-800">
-                    <EllipsisIcon />
-                  </button>
+                  <DropdownMenu />
                 </div>
               </td>
             </tr>
@@ -113,12 +112,7 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <button className="inline-flex h-8 w-8 items-center justify-center rounded border border-zinc-700 hover:bg-zinc-800">
-                    <EllipsisIcon />
-                  </button>
-                  <button>edit product</button>
-                  <button>delete product</button>
-                  <button>release product</button>
+                  <DropdownMenu />
                 </div>
               </td>
             </tr>
