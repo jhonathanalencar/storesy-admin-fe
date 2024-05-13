@@ -14,7 +14,8 @@ export function ProductsInterface() {
         <SearchIcon className="h-4 w-4 text-green-400" />
         <input
           type="text"
-          placeholder="Search"
+          aria-label="Search"
+          placeholder="Search..."
           className="h-6 w-48 rounded bg-transparent text-sm text-zinc-200 outline-none placeholder:text-sm"
         />
       </div>
@@ -38,7 +39,7 @@ export function ProductsInterface() {
           <thead className="border-b border-zinc-800 bg-zinc-950">
             <tr>
               <th className="p-2 text-left text-sm">
-                <Checkbox />
+                <Checkbox id="select all" labelText="Select all products" />
               </th>
               <th className="p-2 text-left text-sm"></th>
               <th className="p-2 text-left text-sm">Name</th>
@@ -54,7 +55,10 @@ export function ProductsInterface() {
           <tbody>
             <tr className="h-[4.25rem] border-b border-zinc-800 bg-zinc-950">
               <td className="p-2 text-sm font-medium text-zinc-300">
-                <Checkbox />
+                <Checkbox
+                  id="checkbox-product-1"
+                  labelText="Select product 1"
+                />
               </td>
               <td className="p-2 text-sm font-medium text-zinc-300">
                 <div className="h-12 w-12 rounded-full bg-zinc-700" />
@@ -84,13 +88,16 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <DropdownMenu />
+                  <DropdownMenu productName="Product 1" />
                 </div>
               </td>
             </tr>
             <tr className="h-[4.25rem] border-b border-zinc-800 bg-zinc-950">
               <td className="p-2 text-sm font-medium text-zinc-300">
-                <Checkbox />
+                <Checkbox
+                  id="checkbox-product-2"
+                  labelText="Select product 2"
+                />
               </td>
               <td className="p-2 text-sm font-medium text-zinc-300">
                 <div className="h-12 w-12 rounded-full bg-zinc-700" />
@@ -112,7 +119,7 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <DropdownMenu />
+                  <DropdownMenu productName="Product 2" />
                 </div>
               </td>
             </tr>
