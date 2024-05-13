@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  @apply h-3;
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-full bg-zinc-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply cursor-pointer rounded-full border-2 border-solid border-zinc-900 bg-orange-400 hover:bg-orange-500;
+}

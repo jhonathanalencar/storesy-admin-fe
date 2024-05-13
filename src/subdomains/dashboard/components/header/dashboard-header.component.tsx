@@ -4,7 +4,7 @@ import { DashboardLink } from './dashboard-link.component';
 
 export function DashboardHeader() {
   return (
-    <header className="mx-auto w-full max-w-6xl p-2 md:p-4">
+    <header className="mx-auto w-full max-w-7xl p-2 md:p-4">
       <div className="grid grid-cols-1 [grid-template-areas:'logo''user'] sm:grid-cols-[1fr_auto] sm:[grid-template-areas:'logo_user']">
         <div className="[grid-area:logo]">
           <h1 className="text-2xl font-black">

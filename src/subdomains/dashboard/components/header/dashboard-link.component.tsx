@@ -19,9 +19,10 @@ export function DashboardLink({
     <Link
       href={href}
       className={twMerge(
-        'flex items-center gap-1 rounded-full px-3 py-1.5 transition-colors duration-200 hover:bg-white/5',
+        'flex items-center gap-1 rounded-full px-3 py-1.5 transition-colors duration-200',
         className,
-        pathname === href ? 'bg-zinc-700' : null
+        pathname === href ? 'bg-zinc-700' : null,
+        pathname !== href ? 'hover:bg-white/10' : null
       )}
       {...rest}
     >
