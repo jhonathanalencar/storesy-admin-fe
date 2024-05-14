@@ -1,4 +1,4 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ProductsInterface } from './products.interface';
@@ -74,7 +74,7 @@ describe('<ProductsInterface>', () => {
       const dropdownMenuButton = screen.getByRole('button', {
         name: /product 1 options/i,
       });
-      await act(async () => {
+      await waitFor(async () => {
         await userEvent.click(dropdownMenuButton);
       });
       const dropdownMenu = await screen.findByRole('menu');
