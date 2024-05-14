@@ -13,3 +13,31 @@
 ::-webkit-scrollbar-thumb {
   @apply cursor-pointer rounded-full border-2 border-solid border-zinc-900 bg-orange-400 hover:bg-orange-500;
 }
+
+.bg-gradient {
+  background: #30e8bf;
+  background: linear-gradient(to right, #30e8bf, #ff8235);
+  background-size: 200% 200%;
+  animation: bgGradient 20s ease infinite;
+}
+@keyframes bgGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.spinner_ajPY {
+  transform-origin: center;
+  animation: spinner_AtaB 0.75s infinite linear;
+}
+@keyframes spinner_AtaB {
+  100% {
+    transform: rotate(360deg);
+  }
+}

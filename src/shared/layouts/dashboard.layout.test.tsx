@@ -2,6 +2,13 @@ import { render, screen } from '@testing-library/react';
 
 import { DashboardLayout } from './dashboard.layout';
 
+jest.mock(
+  '../../subdomains/dashboard/components/header/dashboard-header.component',
+  () => ({
+    DashboardHeader: jest.fn(() => <header>Dashboard Header</header>),
+  })
+);
+
 describe('<DashboardLayout>', () => {
   describe('Render', () => {
     it('should render a main element', () => {

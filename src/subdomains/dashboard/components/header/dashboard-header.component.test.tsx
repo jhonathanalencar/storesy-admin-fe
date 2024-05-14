@@ -2,18 +2,34 @@ import { render, screen } from '@testing-library/react';
 
 import { DashboardHeader } from './dashboard-header.component';
 
+const mockSession = {
+  user: {
+    name: 'Alice',
+    email: 'alice@storesy.com',
+  },
+};
+const mockGetSession = jest.fn(() => mockSession);
+jest.mock('../../../../shared/libs/get-session.lib', () => ({
+  getSession: () => mockGetSession(),
+}));
+
+async function setup() {
+  const Result = await DashboardHeader();
+  return render(Result);
+}
+
 describe('<DashboardHeader>', () => {
   describe('Render', () => {
-    it('should render a header element', () => {
-      render(<DashboardHeader />);
+    it('should render a header element', async () => {
+      await setup();
 
       const header = screen.getByRole('banner');
 
       expect(header).toBeInTheDocument();
     });
 
-    it('should render the logo', () => {
-      render(<DashboardHeader />);
+    it('should render the logo', async () => {
+      await setup();
 
       const logo = screen.getByRole('heading', {
         level: 1,
@@ -23,8 +39,8 @@ describe('<DashboardHeader>', () => {
       expect(logo).toBeInTheDocument();
     });
 
-    it('should render the user information', () => {
-      render(<DashboardHeader />);
+    it('should render the user information', async () => {
+      await setup();
 
       const userName = screen.getByRole('strong', {
         name: /username/i,
@@ -33,7 +49,7 @@ describe('<DashboardHeader>', () => {
         name: /user email/i,
       });
       const userProfilePicture = screen.getByRole('img', {
-        name: /user profile/i,
+        name: mockSession.user.name,
       });
 
       expect(userName).toBeInTheDocument();
@@ -43,16 +59,16 @@ describe('<DashboardHeader>', () => {
       expect(userProfilePicture).toBeInTheDocument();
     });
 
-    it('should render the navigation bar', () => {
-      render(<DashboardHeader />);
+    it('should render the navigation bar', async () => {
+      await setup();
 
       const nav = screen.getByRole('navigation');
 
       expect(nav).toBeInTheDocument();
     });
 
-    it('should render the navigation bar with links to products, categories, discounts and users', () => {
-      render(<DashboardHeader />);
+    it('should render the navigation bar with links to products, categories, discounts and users', async () => {
+      await setup();
 
       const productsLink = screen.getByRole('link', {
         name: /products/i,

@@ -1,8 +1,14 @@
 import { PercentIcon, ShoppingCartIcon, TagIcon, UserIcon } from 'lucide-react';
 
-import { DashboardLink } from './dashboard-link.component';
+import { getSession } from '@shared/libs/get-session.lib';
 
-export function DashboardHeader() {
+import { DashboardLink } from './dashboard-link.component';
+import { UserMenu } from '../user-menu.component';
+
+export async function DashboardHeader() {
+  const session = await getSession();
+  const user = session?.user;
+
   return (
     <header className="mx-auto w-full max-w-7xl p-2 md:p-4">
       <div className="grid grid-cols-1 [grid-template-areas:'logo''user'] sm:grid-cols-[1fr_auto] sm:[grid-template-areas:'logo_user']">
@@ -17,19 +23,19 @@ export function DashboardHeader() {
               aria-label="username"
               className="text-sm font-semibold leading-[1.125rem] sm:text-lg"
             >
-              Alice
+              {user?.name}
             </strong>
             <address
               aria-label="user email"
               className="not-italic leading-none"
             >
               <span className="text-xs text-zinc-300 sm:text-sm">
-                alice@storesy.com
+                {user?.email}
               </span>
             </address>
           </div>
           <div className="h-12 w-12 rounded-full bg-zinc-700">
-            <img src="" alt="user profile" />
+            {user && <UserMenu user={user} />}
           </div>
         </div>
       </div>
