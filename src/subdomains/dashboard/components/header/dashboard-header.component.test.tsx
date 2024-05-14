@@ -12,6 +12,9 @@ const mockGetSession = jest.fn(() => mockSession);
 jest.mock('../../../../shared/libs/get-session.lib', () => ({
   getSession: () => mockGetSession(),
 }));
+jest.mock('../../actions', () => ({
+  signOutAction: jest.fn(),
+}));
 
 async function setup() {
   const Result = await DashboardHeader();
