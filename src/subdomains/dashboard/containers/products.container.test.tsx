@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 
 import { ProductsContainer } from './products.container';
 
+jest.mock('../components/header/dashboard-header.component', () => ({
+  DashboardHeader: jest.fn(() => <header>Dashboard Header</header>),
+}));
+
 describe('<ProductsContainer>', () => {
   describe('Render', () => {
     it('should render a main element', () => {

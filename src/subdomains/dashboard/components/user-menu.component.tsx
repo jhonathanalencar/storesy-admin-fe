@@ -1,8 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import type { User } from 'next-auth';
-import { signOut } from 'next-auth/react';
+
+import { signOutAction } from '../actions';
 
 import { DropdownMenu } from '@shared/components/dropdown-menu.component';
+
 import defaultAvatarIcon from '@assets/images/default-avatar-icon.jpg';
 
 interface UserMenuProps {
@@ -18,15 +22,20 @@ export function UserMenu({ user }: UserMenuProps) {
           alt={user.name ?? 'User profile'}
           width={48}
           height={48}
+          priority
           className="h-full w-full rounded-full"
         />
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
         <DropdownMenu.Item>
-          <button type="submit" onClick={() => signOut()}>
-            Sign out
-          </button>
+          <form
+            action={async () => {
+              await signOutAction();
+            }}
+          >
+            <button type="submit">Sign out</button>
+          </form>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

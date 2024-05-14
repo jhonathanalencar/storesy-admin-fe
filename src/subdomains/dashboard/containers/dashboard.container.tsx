@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation';
 
-import { auth } from '@shared/libs/auth.lib';
+import { getSession } from '@shared/libs/get-session.lib';
 
 import { DashboardInterface } from '../interfaces/dashboard.interface';
 import { DashboardLayout } from '@shared/layouts/dashboard.layout';
 
 export async function DashboardContainer() {
-  const session = await auth();
+  const session = await getSession();
   if (!session || !session.user) redirect('/auth/login');
 
   return (

@@ -1,5 +1,3 @@
-import { SessionProvider } from 'next-auth/react';
-
 import '@assets/styles/globals.css';
 
 interface RootInfrastructure {
@@ -7,5 +5,5 @@ interface RootInfrastructure {
 }
 
 export function RootInfrastructure({ children }: RootInfrastructure) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return children;
 }

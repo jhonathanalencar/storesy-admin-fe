@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation';
 
-import { auth } from '@shared/libs/auth.lib';
+import { getSession } from '@shared/libs/get-session.lib';
 
 import { AppLayout } from '@shared/layouts/app.layout';
 import { LoginInterface } from '../interfaces/login.interface';
 
 export async function LoginContainer() {
-  const session = await auth();
+  const session = await getSession();
   if (session) redirect('/dashboard');
 
   return (

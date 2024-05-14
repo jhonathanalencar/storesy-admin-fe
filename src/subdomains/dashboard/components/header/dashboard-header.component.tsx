@@ -1,14 +1,13 @@
-'use client';
-
-import { useSession } from 'next-auth/react';
 import { PercentIcon, ShoppingCartIcon, TagIcon, UserIcon } from 'lucide-react';
+
+import { getSession } from '@shared/libs/get-session.lib';
 
 import { DashboardLink } from './dashboard-link.component';
 import { UserMenu } from '../user-menu.component';
 
-export function DashboardHeader() {
-  const session = useSession();
-  const user = session.data?.user;
+export async function DashboardHeader() {
+  const session = await getSession();
+  const user = session?.user;
 
   return (
     <header className="mx-auto w-full max-w-7xl p-2 md:p-4">
