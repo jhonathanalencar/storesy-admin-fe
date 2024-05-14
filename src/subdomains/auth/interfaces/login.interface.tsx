@@ -1,9 +1,14 @@
 import Image from 'next/image';
 
 import { providerMap, signIn } from '@shared/libs/auth.lib';
+
 import logoImage from '@assets/images/logo.png';
 
-export function LoginInterface() {
+interface LoginInterfaceProps {
+  redirectTo: string;
+}
+
+export function LoginInterface({ redirectTo }: LoginInterfaceProps) {
   return (
     <section className="mx-auto h-full w-full max-w-7xl p-2 md:p-4">
       <div className="flex h-full w-full flex-col items-center justify-center shadow-md md:flex-row">
@@ -25,7 +30,10 @@ export function LoginInterface() {
                   key={provider.id}
                   action={async () => {
                     'use server';
-                    await signIn(provider.id);
+                    await signIn(provider.id, {
+                      redirectTo,
+                      redirect: true,
+                    });
                   }}
                 >
                   <button

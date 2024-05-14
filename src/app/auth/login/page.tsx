@@ -1,5 +1,11 @@
 import { authRoutes } from '@subdomains/auth/route';
 
-export default function LoginPage() {
-  return <authRoutes.LOGIN />;
+interface LoginPageProps {
+  searchParams: {
+    redirect_to?: string;
+  };
+}
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  return <authRoutes.LOGIN searchParams={searchParams} />;
 }
