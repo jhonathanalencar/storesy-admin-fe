@@ -1,7 +1,7 @@
 import { SearchIcon } from 'lucide-react';
 
 import { Checkbox } from '@shared/components/checkbox.component';
-import { DropdownMenu } from '@shared/components/dropdown-menu.component';
+import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
 
 export function ProductsInterface() {
   return (
@@ -88,7 +88,7 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <DropdownMenu productName="Product 1" />
+                  <DropdownMenuOptions productName="Product 1" />
                 </div>
               </td>
             </tr>
@@ -119,7 +119,7 @@ export function ProductsInterface() {
               </td>
               <td className="p-2 text-zinc-200">
                 <div className="flex justify-end">
-                  <DropdownMenu productName="Product 2" />
+                  <DropdownMenuOptions productName="Product 2" />
                 </div>
               </td>
             </tr>
