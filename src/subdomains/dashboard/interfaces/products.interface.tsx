@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import { SearchIcon } from 'lucide-react';
 
@@ -11,7 +14,27 @@ interface ProductsInterfaceProps {
 }
 
 export function ProductsInterface({ products }: ProductsInterfaceProps) {
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+
   const isDisabled = products === undefined || products.length === 0;
+  const isAllSelected = selectedProductIds.length === products?.length;
+
+  function handleOnCheckedChange(productId: string) {
+    if (selectedProductIds.includes(productId)) {
+      setSelectedProductIds((prev) => prev.filter((id) => id !== productId));
+    } else {
+      setSelectedProductIds((prev) => [productId, ...prev]);
+    }
+  }
+
+  function handleSelectAll(state: boolean) {
+    if (products === undefined) return;
+    if (state === true) {
+      setSelectedProductIds(products.map((product) => product.productId));
+    } else {
+      setSelectedProductIds([]);
+    }
+  }
 
   return (
     <section
@@ -44,31 +67,28 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
         tabIndex={0}
         className="overflow-x-auto rounded border border-zinc-800 px-2 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
       >
-        <div className="flex h-10 items-center justify-between p-2">
-          <button
-            type="button"
-            disabled={isDisabled}
-            className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
-          >
-            Deselect all
-          </button>
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              disabled={isDisabled}
-              className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
-            >
-              Disable products
-            </button>
-            <button
-              type="button"
-              disabled={isDisabled}
-              className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
-            >
-              Delete products
-            </button>
-            <span className="text-sm font-medium">2 selected</span>
-          </div>
+        <div className="flex h-10 items-center justify-end p-2">
+          {selectedProductIds.length > 0 ? (
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                disabled={isDisabled}
+                className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+              >
+                Release products
+              </button>
+              <button
+                type="button"
+                disabled={isDisabled}
+                className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+              >
+                Delete products
+              </button>
+              <span className="text-sm font-medium">
+                {selectedProductIds.length} selected
+              </span>
+            </div>
+          ) : null}
         </div>
         <table className="w-full min-w-[42rem] border-collapse">
           <caption className="sr-only">Current Products</caption>
@@ -79,6 +99,8 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
                   id="select all"
                   labelText="Select all products"
                   disabled={isDisabled}
+                  onCheckedChange={handleSelectAll}
+                  checked={isAllSelected}
                   className="disabled:cursor-not-allowed disabled:opacity-70"
                 />
               </th>
@@ -105,6 +127,12 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
                         <Checkbox
                           id={`checkbox-${product.slug}`}
                           labelText={`Select ${product.name}`}
+                          checked={selectedProductIds.includes(
+                            product.productId
+                          )}
+                          onCheckedChange={() =>
+                            handleOnCheckedChange(product.productId)
+                          }
                         />
                       </td>
                       <td className="p-2 text-sm font-medium text-zinc-300">
