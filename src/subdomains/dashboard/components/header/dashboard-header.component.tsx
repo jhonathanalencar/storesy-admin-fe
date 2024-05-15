@@ -39,7 +39,7 @@ export async function DashboardHeader() {
           </div>
         </div>
       </div>
-      <nav className="flex items-center gap-2">
+      <nav aria-label="Main menu" className="flex items-center gap-2">
         <DashboardLink href="/dashboard/products" title="Products">
           <ShoppingCartIcon className="h-4 w-4 text-green-400" />
           <span className="hidden text-sm font-medium sm:block">Products</span>

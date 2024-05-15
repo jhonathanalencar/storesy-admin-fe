@@ -9,11 +9,12 @@ import { ProductsInterface } from '../interfaces/products.interface';
 import { Skeleton } from '../components/skeleton.component';
 
 async function ProductsContainerLoader() {
+  const session = await getSession();
+  if (!session || !session.user) {
+    redirect('/auth/login?redirect_to=/dashboard/products');
+  }
+
   try {
-    const session = await getSession();
-    if (!session || !session.user) {
-      redirect('/auth/login?redirect_to=/dashboard/products');
-    }
     const products = await getProducts();
 
     return <ProductsInterface products={products} />;

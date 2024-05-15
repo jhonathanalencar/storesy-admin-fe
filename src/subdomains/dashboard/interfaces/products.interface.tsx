@@ -22,16 +22,28 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
         Products
       </h2>
       <div className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950">
+        <label htmlFor="search-textbox" className="sr-only">
+          Search products
+        </label>
         <SearchIcon className="h-4 w-4 text-green-400" />
         <input
+          id="search-textbox"
           type="text"
+          name="search"
           aria-label="Search"
           placeholder="Search..."
+          autoComplete="name"
           disabled={isDisabled}
           className="h-6 w-48 rounded bg-transparent text-sm text-zinc-200 outline-none placeholder:text-sm disabled:cursor-not-allowed disabled:opacity-70"
         />
       </div>
-      <div className="overflow-x-auto rounded border border-zinc-800 px-2 py-3">
+      <div
+        role="region"
+        aria-label="Products table"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        tabIndex={0}
+        className="overflow-x-auto rounded border border-zinc-800 px-2 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+      >
         <div className="flex h-10 items-center justify-between p-2">
           <button
             type="button"

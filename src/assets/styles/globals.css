@@ -14,6 +14,10 @@
   @apply cursor-pointer border-2 border-solid border-zinc-900 bg-orange-400 hover:bg-orange-500;
 }
 
+input {
+  color-scheme: dark;
+}
+
 .bg-gradient {
   background: #30e8bf;
   background: linear-gradient(to right, #30e8bf, #ff8235);
