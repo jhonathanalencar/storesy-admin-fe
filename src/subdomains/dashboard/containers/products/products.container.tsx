@@ -4,11 +4,21 @@ import { DashboardLayout } from '@shared/layouts/dashboard.layout';
 import { ProductsContainerLoader } from './products-loader.container';
 import { ProductsContainerSkeleton } from './products-skeleton.container';
 
-export function ProductsContainer() {
+interface ProductsContainerProps {
+  searchParams: {
+    page?: string;
+    limit?: string;
+  };
+}
+
+export function ProductsContainer({ searchParams }: ProductsContainerProps) {
   return (
     <DashboardLayout>
       <Suspense fallback={<ProductsContainerSkeleton />}>
-        <ProductsContainerLoader />
+        <ProductsContainerLoader
+          page={searchParams.page}
+          limit={searchParams.limit}
+        />
       </Suspense>
     </DashboardLayout>
   );

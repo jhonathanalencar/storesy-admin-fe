@@ -2,12 +2,20 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { SearchIcon } from 'lucide-react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+  SearchIcon,
+} from 'lucide-react';
 
 import type { TProduct } from '../types';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
@@ -15,6 +23,11 @@ interface ProductsInterfaceProps {
 
 export function ProductsInterface({ products }: ProductsInterfaceProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const page = parseInt(searchParams.get('page') ?? '1');
+  const limit = parseInt(searchParams.get('limit') ?? '10');
+  const totalPages = Math.ceil(18 / limit);
 
   const isDisabled = products === undefined || products.length === 0;
   const isAllSelected = selectedProductIds.length === products?.length;
@@ -36,10 +49,21 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
     }
   }
 
+  const isFirstPage = page === 1;
+  const isLastPage = page + 1 > totalPages;
+
+  function createUrl(pathname: string, page?: number) {
+    const searchParams = new URLSearchParams();
+    if (page && page > 1) {
+      searchParams.append('page', String(page));
+    }
+    return `${pathname}?${searchParams.toString()}`;
+  }
+
   return (
     <section
       aria-labelledby="product-management-section-heading"
-      className="mx-auto w-full max-w-7xl p-2 md:p-4"
+      className="mx-auto w-full max-w-7xl p-2 pb-10 md:p-4 md:pb-10"
     >
       <h2 id="product-management-section-heading" className="text-xl font-bold">
         Products
@@ -188,6 +212,63 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
             Sorry, no products available.
           </p>
         ) : null}
+      </div>
+
+      <div className="flex items-center justify-end">
+        <span>Page 1 of {totalPages}</span>
+        <div className="flex items-center gap-2">
+          {isFirstPage ? (
+            <span aria-disabled>
+              <ChevronsLeftIcon focusable={false} aria-hidden />
+            </span>
+          ) : (
+            <Link
+              href={createUrl(pathname, 1)}
+              aria-label="Go to first page, page 1"
+            >
+              <ChevronsLeftIcon />
+            </Link>
+          )}
+
+          {isFirstPage ? (
+            <span aria-disabled>
+              <ChevronLeftIcon focusable={false} aria-hidden />
+            </span>
+          ) : (
+            <Link
+              href={createUrl(pathname, page - 1)}
+              aria-label={`Go to previous page, page ${page - 1}`}
+            >
+              <ChevronLeftIcon />
+            </Link>
+          )}
+
+          {isLastPage ? (
+            <span aria-disabled>
+              <ChevronRightIcon focusable={false} aria-hidden />
+            </span>
+          ) : (
+            <Link
+              href={createUrl(pathname, page + 1)}
+              aria-label={`Go to next page, page ${page + 1}`}
+            >
+              <ChevronRightIcon />
+            </Link>
+          )}
+
+          {isLastPage ? (
+            <span aria-disabled>
+              <ChevronsRightIcon focusable={false} aria-hidden />
+            </span>
+          ) : (
+            <Link
+              href={createUrl(pathname, totalPages)}
+              aria-label={`Go to last page, page ${totalPages}`}
+            >
+              <ChevronsRightIcon />
+            </Link>
+          )}
+        </div>
       </div>
     </section>
   );

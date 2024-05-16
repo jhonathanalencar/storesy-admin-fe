@@ -5,16 +5,24 @@ import { getProducts } from '../../queries';
 
 import { ProductsInterface } from '../../interfaces/products.interface';
 
-export async function ProductsContainerLoader() {
+interface ProductsContainerLoaderProps {
+  page?: string;
+  limit?: string;
+}
+
+export async function ProductsContainerLoader({
+  page,
+  limit,
+}: ProductsContainerLoaderProps) {
   const session = await getSession();
   if (!session || !session.user) {
     redirect('/auth/login?redirect_to=/dashboard/products');
   }
 
   try {
-    const products = await getProducts();
+    const data = await getProducts({ page, limit });
 
-    return <ProductsInterface products={products} />;
+    return <ProductsInterface products={data?.products} />;
   } catch (error) {
     console.error(error);
     return (
