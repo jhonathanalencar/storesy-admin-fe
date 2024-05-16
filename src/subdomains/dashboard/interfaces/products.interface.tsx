@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { SearchIcon } from 'lucide-react';
 
@@ -8,13 +8,24 @@ import type { TProduct } from '../types';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
+import { Pagination } from '../components/pagination.component';
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
+  currentPage: number;
+  totalPages: number;
 }
 
-export function ProductsInterface({ products }: ProductsInterfaceProps) {
+export function ProductsInterface({
+  products,
+  currentPage,
+  totalPages,
+}: ProductsInterfaceProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedProductIds([]);
+  }, [currentPage]);
 
   const isDisabled = products === undefined || products.length === 0;
   const isAllSelected = selectedProductIds.length === products?.length;
@@ -39,7 +50,7 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
   return (
     <section
       aria-labelledby="product-management-section-heading"
-      className="mx-auto w-full max-w-7xl p-2 md:p-4"
+      className="mx-auto w-full max-w-7xl p-2 pb-10 md:p-4 md:pb-10"
     >
       <h2 id="product-management-section-heading" className="text-xl font-bold">
         Products
@@ -189,6 +200,8 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
           </p>
         ) : null}
       </div>
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </section>
   );
 }
