@@ -6,6 +6,7 @@ import { ProductsContainerSkeleton } from './products-skeleton.container';
 
 interface ProductsContainerProps {
   searchParams: {
+    query?: string;
     page?: string;
     limit?: string;
   };
@@ -18,7 +19,11 @@ export function ProductsContainer({ searchParams }: ProductsContainerProps) {
   return (
     <DashboardLayout>
       <Suspense fallback={<ProductsContainerSkeleton />}>
-        <ProductsContainerLoader page={page} limit={limit} />
+        <ProductsContainerLoader
+          page={page}
+          query={searchParams.query}
+          limit={limit}
+        />
       </Suspense>
     </DashboardLayout>
   );

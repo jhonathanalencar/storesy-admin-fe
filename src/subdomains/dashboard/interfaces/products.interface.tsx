@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { redirect, useSearchParams } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
 
 import type { TProduct } from '../types';
@@ -22,6 +23,8 @@ export function ProductsInterface({
   totalPages,
 }: ProductsInterfaceProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const query = searchParams.get('query');
 
   useEffect(() => {
     setSelectedProductIds([]);
@@ -55,7 +58,16 @@ export function ProductsInterface({
       <h2 id="product-management-section-heading" className="text-xl font-bold">
         Products
       </h2>
-      <div className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950">
+      <form
+        action={(formData) => {
+          const searchQuery = formData.get('query')?.toString();
+          if (searchQuery) {
+            redirect(`/dashboard/products?query=${searchQuery}`);
+          }
+          redirect('/dashboard/products');
+        }}
+        className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950"
+      >
         <label htmlFor="search-textbox" className="sr-only">
           Search products
         </label>
@@ -63,14 +75,15 @@ export function ProductsInterface({
         <input
           id="search-textbox"
           type="text"
-          name="search"
+          name="query"
           aria-label="Search"
           placeholder="Search..."
           autoComplete="name"
-          disabled={isDisabled}
+          defaultValue={query ?? ''}
+          disabled={products === undefined}
           className="h-6 w-48 rounded bg-transparent text-sm text-zinc-200 outline-none placeholder:text-sm disabled:cursor-not-allowed disabled:opacity-70"
         />
-      </div>
+      </form>
       <div
         role="region"
         aria-label="Products table"
