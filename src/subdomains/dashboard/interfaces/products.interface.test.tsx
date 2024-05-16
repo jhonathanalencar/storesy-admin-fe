@@ -1,22 +1,42 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import type { TProduct } from '../types';
+
 import { ProductsInterface } from './products.interface';
+
+const mockProducts: TProduct[] = [
+  {
+    productId: '1',
+    name: 'Product 1',
+    slug: 'product-1',
+    description: 'Product 1 description',
+    price: 20,
+    categories: ['Category'],
+    imageUrl: 'https://images.com/photo-1',
+    quantity: 10,
+    releasedDate: '2024-05-15T10:00:00.000Z',
+    discountPercent: 30,
+    active: true,
+    rateAmount: 2,
+    totalScore: 9,
+  },
+];
 
 describe('<ProductsInterface>', () => {
   describe('Render', () => {
     it('should render a section element', () => {
-      render(<ProductsInterface />);
+      render(<ProductsInterface products={mockProducts} />);
 
       const section = screen.getByRole('region', {
-        name: /product management/i,
+        name: 'Products',
       });
 
       expect(section).toBeInTheDocument();
     });
 
     it('should render the "Products" title', () => {
-      render(<ProductsInterface />);
+      render(<ProductsInterface products={mockProducts} />);
 
       const title = screen.getByRole('heading', {
         name: /products/i,
@@ -26,7 +46,7 @@ describe('<ProductsInterface>', () => {
     });
 
     it('should render a search input', () => {
-      render(<ProductsInterface />);
+      render(<ProductsInterface products={mockProducts} />);
 
       const searchInput = screen.getByRole('textbox', {
         name: /search/i,
@@ -35,18 +55,26 @@ describe('<ProductsInterface>', () => {
       expect(searchInput).toBeInTheDocument();
     });
 
-    it('should render the actions header that displays the number of selected products and options to disable or delete them', () => {
-      render(<ProductsInterface />);
+    it('should render the actions header that displays the number of selected products and options to release or delete them when at least one product is selected', async () => {
+      render(<ProductsInterface products={mockProducts} />);
 
-      const disableButton = screen.getByRole('button', {
-        name: /disable products/i,
+      const checkbox = screen.getByRole('checkbox', {
+        name: /select product 1/i,
       });
+
+      await waitFor(async () => {
+        await userEvent.click(checkbox);
+        const releaseButton = screen.getByRole('button', {
+          name: /release products/i,
+        });
+        expect(releaseButton).toBeInTheDocument();
+      });
+
       const deleteButton = screen.getByRole('button', {
         name: /delete products/i,
       });
-      const selectedProducts = screen.getByText(/2 selected/i);
+      const selectedProducts = screen.getByText(/1 selected/i);
 
-      expect(disableButton).toBeInTheDocument();
       expect(deleteButton).toBeInTheDocument();
       expect(selectedProducts).toBeInTheDocument();
     });
@@ -58,19 +86,19 @@ describe('<ProductsInterface>', () => {
         unobserve: jest.fn(),
       }));
 
-      render(<ProductsInterface />);
+      render(<ProductsInterface products={mockProducts} />);
 
       const table = screen.getByRole('table');
       const checkbox = screen.getByRole('checkbox', {
         name: /select product 1/i,
       });
       const name = screen.getByRole('heading', {
-        name: /product 1 lorem ipsum dolor sit amet consectetur adipisicing elit\. repellat officiis, deserunt odio sunt repellendus necessitatibus dicta quam aperiam at aliquid\. esse distinctio officia dolorem repudiandae et\. quis eligendi, inventore tempore quas sed commodi et dolorem vero eaque nesciunt eos debitis voluptatem repellat quae totam quam! quidem possimus culpa rem dignissimos\?/i,
+        name: /product 1/i,
       });
-      const price = screen.getByText(/\$ 20/i);
-      const quantity = screen.getByText(/15/i);
-      const discount = screen.getByText(/enabled/i);
-      const releaseDate = screen.getByText(/12\/04\/2024/i);
+      const price = screen.getByText(/\$20.00/i);
+      const quantity = screen.getByText(/10/i);
+      const discount = screen.getByText(/active/i);
+      const releaseDate = screen.getByText(/May 15, 2024/i);
       const dropdownMenuButton = screen.getByRole('button', {
         name: /product 1 options/i,
       });
