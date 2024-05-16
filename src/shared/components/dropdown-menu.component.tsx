@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { twMerge } from 'tailwind-merge';
 
 interface DropdownMenuRootProps
   extends DropdownMenuPrimitive.DropdownMenuProps {
@@ -39,12 +40,16 @@ interface DropdownMenuContentProps
 
 export function DropdownMenuContent({
   children,
+  className = '',
   ...rest
 }: DropdownMenuContentProps) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
-        className="min-w-28 rounded bg-zinc-800 p-2 text-zinc-200 shadow-md data-[state=closed]:animate-slide-up-and-fade-out data-[state=open]:animate-slide-down-and-fade"
+        className={twMerge(
+          'min-w-28 rounded bg-zinc-800 p-2 text-zinc-200 shadow-md data-[state=closed]:animate-slide-up-and-fade-out data-[state=open]:animate-slide-down-and-fade',
+          className
+        )}
         sideOffset={5}
         {...rest}
       >
@@ -60,10 +65,17 @@ interface DropdownMenuItemProps
   children: ReactNode;
 }
 
-export function DropdownMenuItem({ children, ...rest }: DropdownMenuItemProps) {
+export function DropdownMenuItem({
+  children,
+  className = '',
+  ...rest
+}: DropdownMenuItemProps) {
   return (
     <DropdownMenuPrimitive.Item
-      className="flex h-7 select-none items-center rounded px-1 text-sm font-medium capitalize leading-none outline-none data-[highlighted]:bg-orange-400 data-[highlighted]:text-zinc-800"
+      className={twMerge(
+        'flex h-7 select-none items-center rounded px-1 text-sm font-medium capitalize leading-none outline-none data-[highlighted]:bg-orange-400 data-[highlighted]:text-zinc-800',
+        className
+      )}
       {...rest}
     >
       {children}

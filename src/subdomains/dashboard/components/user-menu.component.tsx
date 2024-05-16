@@ -28,7 +28,7 @@ export function UserMenu({ user }: UserMenuProps) {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
-        <DropdownMenu.Item>
+        <DropdownMenu.Item className="cursor-pointer">
           <form
             action={async () => {
               await signOutAction();
