@@ -12,13 +12,13 @@ interface ProductsContainerProps {
 }
 
 export function ProductsContainer({ searchParams }: ProductsContainerProps) {
+  const page = parseInt(searchParams.page ?? '1');
+  const limit = parseInt(searchParams.limit ?? '10');
+
   return (
     <DashboardLayout>
       <Suspense fallback={<ProductsContainerSkeleton />}>
-        <ProductsContainerLoader
-          page={searchParams.page}
-          limit={searchParams.limit}
-        />
+        <ProductsContainerLoader page={page} limit={limit} />
       </Suspense>
     </DashboardLayout>
   );

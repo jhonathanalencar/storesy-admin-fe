@@ -27,16 +27,20 @@ const mockProducts: TProduct[] = [
   },
 ];
 const mockProductsInterface = jest.mocked(
-  <ProductsInterface products={mockProducts} />
+  <ProductsInterface products={mockProducts} currentPage={1} totalPages={1} />
 );
 jest.mock('./products-loader.container', () => ({
   ProductsContainerLoader: jest.fn(() => mockProductsInterface),
 }));
+const mockSearchParams = {
+  page: '1',
+  limit: '10',
+};
 
 describe('<ProductsContainer>', () => {
   describe('Render', () => {
     it('should render a main element', () => {
-      render(<ProductsContainer />);
+      render(<ProductsContainer searchParams={mockSearchParams} />);
 
       const main = screen.getByRole('main');
 
@@ -44,7 +48,7 @@ describe('<ProductsContainer>', () => {
     });
 
     it('should render a header element', () => {
-      render(<ProductsContainer />);
+      render(<ProductsContainer searchParams={mockSearchParams} />);
 
       const header = screen.getByRole('banner');
 
@@ -52,7 +56,7 @@ describe('<ProductsContainer>', () => {
     });
 
     it('should render the "products" title', () => {
-      render(<ProductsContainer />);
+      render(<ProductsContainer searchParams={mockSearchParams} />);
 
       const title = screen.getByRole('heading', {
         name: /products/i,

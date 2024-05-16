@@ -6,8 +6,8 @@ import { getProducts } from '../../queries';
 import { ProductsInterface } from '../../interfaces/products.interface';
 
 interface ProductsContainerLoaderProps {
-  page?: string;
-  limit?: string;
+  page: number;
+  limit: number;
 }
 
 export async function ProductsContainerLoader({
@@ -18,11 +18,17 @@ export async function ProductsContainerLoader({
   if (!session || !session.user) {
     redirect('/auth/login?redirect_to=/dashboard/products');
   }
-
   try {
     const data = await getProducts({ page, limit });
+    const totalPages = data?.total ? Math.ceil(data.total / limit) : 0;
 
-    return <ProductsInterface products={data?.products} />;
+    return (
+      <ProductsInterface
+        products={data?.products}
+        currentPage={page}
+        totalPages={totalPages}
+      />
+    );
   } catch (error) {
     console.error(error);
     return (

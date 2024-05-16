@@ -40,9 +40,12 @@ jest.mock('../../queries', () => ({
   getProducts: () => mockGetProducts(),
 }));
 jest.spyOn(console, 'error').mockImplementation(() => jest.fn());
+jest.mock('../../components/pagination.component', () => ({
+  Pagination: jest.fn(),
+}));
 
 async function setup() {
-  const Result = await ProductsContainerLoader();
+  const Result = await ProductsContainerLoader({ page: 1, limit: 10 });
   return render(Result);
 }
 
@@ -64,7 +67,10 @@ describe('<ProductsContainerLoader>', () => {
 
     it('should render products interface when session and user information is available', async () => {
       mockGetSession.mockImplementation(() => mockSession);
-      mockGetProducts.mockImplementation(() => mockProducts);
+      mockGetProducts.mockImplementation(() => ({
+        total: 10,
+        products: mockProducts,
+      }));
       await setup();
 
       const name = screen.getByRole('heading', {

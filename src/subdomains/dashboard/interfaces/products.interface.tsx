@@ -1,33 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  SearchIcon,
-} from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 
 import type { TProduct } from '../types';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
-import { usePathname, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { Pagination } from '../components/pagination.component';
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
+  currentPage: number;
+  totalPages: number;
 }
 
-export function ProductsInterface({ products }: ProductsInterfaceProps) {
+export function ProductsInterface({
+  products,
+  currentPage,
+  totalPages,
+}: ProductsInterfaceProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const page = parseInt(searchParams.get('page') ?? '1');
-  const limit = parseInt(searchParams.get('limit') ?? '10');
-  const totalPages = Math.ceil(18 / limit);
+
+  useEffect(() => {
+    setSelectedProductIds([]);
+  }, [currentPage]);
 
   const isDisabled = products === undefined || products.length === 0;
   const isAllSelected = selectedProductIds.length === products?.length;
@@ -47,17 +45,6 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
     } else {
       setSelectedProductIds([]);
     }
-  }
-
-  const isFirstPage = page === 1;
-  const isLastPage = page + 1 > totalPages;
-
-  function createUrl(pathname: string, page?: number) {
-    const searchParams = new URLSearchParams();
-    if (page && page > 1) {
-      searchParams.append('page', String(page));
-    }
-    return `${pathname}?${searchParams.toString()}`;
   }
 
   return (
@@ -214,96 +201,7 @@ export function ProductsInterface({ products }: ProductsInterfaceProps) {
         ) : null}
       </div>
 
-      <div className="flex items-center justify-end gap-6 py-4">
-        <span className="text-sm font-medium text-zinc-500 md:text-base">
-          Page 1 of {totalPages}
-        </span>
-        <div role="navigation" className="flex items-center gap-2">
-          {isFirstPage ? (
-            <span
-              aria-disabled
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"
-            >
-              <ChevronsLeftIcon
-                focusable={false}
-                aria-hidden
-                className="h-4 w-4 text-zinc-500"
-              />
-            </span>
-          ) : (
-            <Link
-              href={createUrl(pathname, 1)}
-              aria-label="Go to first page, page 1"
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
-            >
-              <ChevronsLeftIcon className="h-4 w-4 text-zinc-100" />
-            </Link>
-          )}
-
-          {isFirstPage ? (
-            <span
-              aria-disabled
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"
-            >
-              <ChevronLeftIcon
-                focusable={false}
-                aria-hidden
-                className="h-4 w-4 text-zinc-500"
-              />
-            </span>
-          ) : (
-            <Link
-              href={createUrl(pathname, page - 1)}
-              aria-label={`Go to previous page, page ${page - 1}`}
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
-            >
-              <ChevronLeftIcon className="h-4 w-4 text-zinc-100" />
-            </Link>
-          )}
-
-          {isLastPage ? (
-            <span
-              aria-disabled
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"
-            >
-              <ChevronRightIcon
-                focusable={false}
-                aria-hidden
-                className="h-4 w-4 text-zinc-500"
-              />
-            </span>
-          ) : (
-            <Link
-              href={createUrl(pathname, page + 1)}
-              aria-label={`Go to next page, page ${page + 1}`}
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
-            >
-              <ChevronRightIcon className="h-4 w-4 text-zinc-100" />
-            </Link>
-          )}
-
-          {isLastPage ? (
-            <span
-              aria-disabled
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"
-            >
-              <ChevronsRightIcon
-                focusable={false}
-                aria-hidden
-                className="h-4 w-4 text-zinc-500"
-              />
-            </span>
-          ) : (
-            <Link
-              href={createUrl(pathname, totalPages)}
-              aria-label={`Go to last page, page ${totalPages}`}
-              className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
-            >
-              <ChevronsRightIcon className="h-4 w-4 text-zinc-100" />
-            </Link>
-          )}
-        </div>
-      </div>
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </section>
   );
 }
