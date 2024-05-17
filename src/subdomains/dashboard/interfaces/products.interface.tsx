@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { SearchIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
+import * as Dialog from '@radix-ui/react-dialog';
 
 import type { TProduct } from '../types';
 import { searchAction } from '../actions';
@@ -11,6 +12,7 @@ import { searchAction } from '../actions';
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
 import { Pagination } from '../components/pagination.component';
+import { CreateProductDialog } from '../components/create-product-dialog.component';
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
@@ -56,9 +58,25 @@ export function ProductsInterface({
       aria-labelledby="product-management-section-heading"
       className="mx-auto w-full max-w-7xl p-2 pb-10 md:p-4 md:pb-10"
     >
-      <h2 id="product-management-section-heading" className="text-xl font-bold">
-        Products
-      </h2>
+      <div className="flex items-center gap-3">
+        <h2
+          id="product-management-section-heading"
+          className="text-xl font-bold"
+        >
+          Products
+        </h2>
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <button className="flex items-center gap-1 rounded-full bg-green-400 p-2 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
+              <PlusIcon className="h-4 w-4 text-zinc-800" />
+              <span className="text-sm font-semibold text-zinc-800">
+                Create product
+              </span>
+            </button>
+          </Dialog.Trigger>
+          <CreateProductDialog />
+        </Dialog.Root>
+      </div>
       <form
         action={searchAction}
         className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950"
@@ -71,7 +89,7 @@ export function ProductsInterface({
           id="search-textbox"
           type="text"
           name="query"
-          aria-label="Search"
+          aria-label="Search products"
           placeholder="Search..."
           autoComplete="name"
           defaultValue={query ?? ''}
