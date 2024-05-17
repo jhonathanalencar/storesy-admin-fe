@@ -22,11 +22,26 @@ const mockProducts: TProduct[] = [
     totalScore: 9,
   },
 ];
+jest.mock('next/navigation', () => ({
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(),
+  })),
+}));
+jest.mock('../actions', () => ({
+  signOutAction: jest.fn(),
+}));
 
 describe('<ProductsInterface>', () => {
   describe('Render', () => {
     it('should render a section element', () => {
-      render(<ProductsInterface products={mockProducts} />);
+      render(
+        <ProductsInterface
+          products={mockProducts}
+          currentPage={1}
+          totalPages={2}
+        />
+      );
 
       const section = screen.getByRole('region', {
         name: 'Products',
@@ -36,7 +51,13 @@ describe('<ProductsInterface>', () => {
     });
 
     it('should render the "Products" title', () => {
-      render(<ProductsInterface products={mockProducts} />);
+      render(
+        <ProductsInterface
+          products={mockProducts}
+          currentPage={1}
+          totalPages={2}
+        />
+      );
 
       const title = screen.getByRole('heading', {
         name: /products/i,
@@ -46,7 +67,13 @@ describe('<ProductsInterface>', () => {
     });
 
     it('should render a search input', () => {
-      render(<ProductsInterface products={mockProducts} />);
+      render(
+        <ProductsInterface
+          products={mockProducts}
+          currentPage={1}
+          totalPages={2}
+        />
+      );
 
       const searchInput = screen.getByRole('textbox', {
         name: /search/i,
@@ -56,7 +83,13 @@ describe('<ProductsInterface>', () => {
     });
 
     it('should render the actions header that displays the number of selected products and options to release or delete them when at least one product is selected', async () => {
-      render(<ProductsInterface products={mockProducts} />);
+      render(
+        <ProductsInterface
+          products={mockProducts}
+          currentPage={1}
+          totalPages={2}
+        />
+      );
 
       const checkbox = screen.getByRole('checkbox', {
         name: /select product 1/i,
@@ -86,7 +119,13 @@ describe('<ProductsInterface>', () => {
         unobserve: jest.fn(),
       }));
 
-      render(<ProductsInterface products={mockProducts} />);
+      render(
+        <ProductsInterface
+          products={mockProducts}
+          currentPage={1}
+          totalPages={2}
+        />
+      );
 
       const table = screen.getByRole('table');
       const checkbox = screen.getByRole('checkbox', {

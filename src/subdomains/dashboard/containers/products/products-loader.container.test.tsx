@@ -16,6 +16,10 @@ jest.mock('../../../../shared/libs/get-session.lib', () => ({
 }));
 const mockRedirect = jest.fn();
 jest.mock('next/navigation', () => ({
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(),
+  })),
   redirect: (path: string) => mockRedirect(path),
 }));
 const mockProducts: TProduct[] = [
@@ -42,6 +46,9 @@ jest.mock('../../queries', () => ({
 jest.spyOn(console, 'error').mockImplementation(() => jest.fn());
 jest.mock('../../components/pagination.component', () => ({
   Pagination: jest.fn(),
+}));
+jest.mock('../../actions', () => ({
+  signOutAction: jest.fn(),
 }));
 
 async function setup() {

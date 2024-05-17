@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
 
 import type { TProduct } from '../types';
+import { searchAction } from '../actions';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
@@ -59,13 +60,7 @@ export function ProductsInterface({
         Products
       </h2>
       <form
-        action={(formData) => {
-          const searchQuery = formData.get('query')?.toString();
-          if (searchQuery) {
-            redirect(`/dashboard/products?query=${searchQuery}`);
-          }
-          redirect('/dashboard/products');
-        }}
+        action={searchAction}
         className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950"
       >
         <label htmlFor="search-textbox" className="sr-only">
@@ -214,7 +209,9 @@ export function ProductsInterface({
         ) : null}
       </div>
 
-      <Pagination currentPage={currentPage} totalPages={totalPages} />
+      {products !== undefined && products.length > 0 ? (
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      ) : null}
     </section>
   );
 }
