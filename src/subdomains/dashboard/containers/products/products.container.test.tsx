@@ -36,6 +36,15 @@ const mockSearchParams = {
   page: '1',
   limit: '10',
 };
+jest.mock('next/navigation', () => ({
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(),
+  })),
+}));
+jest.mock('../../actions', () => ({
+  signOutAction: jest.fn(),
+}));
 
 describe('<ProductsContainer>', () => {
   describe('Render', () => {

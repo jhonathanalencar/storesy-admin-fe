@@ -1,4 +1,4 @@
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ChevronLeftIcon,
@@ -7,8 +7,11 @@ import {
   ChevronsRightIcon,
 } from 'lucide-react';
 
-function createUrl(pathname: string, page?: number) {
+function createUrl(pathname: string, query: string | null, page?: number) {
   const searchParams = new URLSearchParams();
+  if (query) {
+    searchParams.append('query', query);
+  }
   if (page) {
     searchParams.append('page', String(page));
   }
@@ -22,6 +25,7 @@ interface PaginationProps {
 
 export function Pagination({ currentPage, totalPages }: PaginationProps) {
   const pathname = usePathname();
+  const query = useSearchParams().get('query');
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage + 1 > totalPages;
@@ -45,7 +49,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
           </span>
         ) : (
           <Link
-            href={createUrl(pathname, 1)}
+            href={createUrl(pathname, query, 1)}
             aria-label="Go to first page, page 1"
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
           >
@@ -66,7 +70,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
           </span>
         ) : (
           <Link
-            href={createUrl(pathname, currentPage - 1)}
+            href={createUrl(pathname, query, currentPage - 1)}
             aria-label={`Go to previous page, page ${currentPage - 1}`}
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
           >
@@ -87,7 +91,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
           </span>
         ) : (
           <Link
-            href={createUrl(pathname, currentPage + 1)}
+            href={createUrl(pathname, query, currentPage + 1)}
             aria-label={`Go to next page, page ${currentPage + 1}`}
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
           >
@@ -108,7 +112,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
           </span>
         ) : (
           <Link
-            href={createUrl(pathname, totalPages)}
+            href={createUrl(pathname, query, totalPages)}
             aria-label={`Go to last page, page ${totalPages}`}
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 ring-1 ring-inset ring-zinc-700 transition-colors hover:bg-zinc-900"
           >

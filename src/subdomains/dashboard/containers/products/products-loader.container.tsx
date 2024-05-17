@@ -8,18 +8,20 @@ import { ProductsInterface } from '../../interfaces/products.interface';
 interface ProductsContainerLoaderProps {
   page: number;
   limit: number;
+  query?: string;
 }
 
 export async function ProductsContainerLoader({
   page,
   limit,
+  query = '',
 }: ProductsContainerLoaderProps) {
   const session = await getSession();
   if (!session || !session.user) {
     redirect('/auth/login?redirect_to=/dashboard/products');
   }
   try {
-    const data = await getProducts({ page, limit });
+    const data = await getProducts({ page, query, limit });
     const totalPages = data?.total ? Math.ceil(data.total / limit) : 0;
 
     return (
