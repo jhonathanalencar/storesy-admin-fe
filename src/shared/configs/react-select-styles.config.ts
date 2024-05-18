@@ -11,10 +11,11 @@ export const styles = {
     backgroundColor: colors.zinc[950],
     borderColor: colors.zinc[700],
     ':focus-within': {
-      borderColor: colors.green[200],
+      borderColor: colors.green[400],
+      boxShadow: '0 0 0 1px #4ade80',
     },
     ':hover': {
-      borderColor: colors.green[200],
+      borderColor: colors.green[400],
     },
   }),
   menu: (styles: CSSObjectWithLabel) => ({
@@ -33,11 +34,11 @@ export const styles = {
       background: colors.zinc[800],
     },
     '::-webkit-scrollbar-thumb': {
-      background: colors.blue[600],
+      background: colors.green[600],
       borderRadius: '0.25rem',
     },
     '::-webkit-scrollbar-thumb:hover': {
-      background: colors.blue[700],
+      background: colors.green[700],
     },
   }),
   input: (styles: CSSObjectWithLabel) => ({

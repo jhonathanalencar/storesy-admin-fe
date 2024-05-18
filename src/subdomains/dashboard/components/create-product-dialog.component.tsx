@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Select from 'react-select';
 import { XIcon } from 'lucide-react';
@@ -34,14 +35,32 @@ export function CreateProductDialog() {
     resolver: zodResolver(formSchema),
     mode: 'all',
   });
+  const [nextInput, setNextInput] = useState<keyof FormInputs>('imageUrl');
+  const [isReverse, setIsReverse] = useState(false);
 
   function handleOnSubmit(data: FormInputs) {
     console.log(data);
   }
 
-  function handleFocusNextinput(nextInput: 'imageUrl' | 'quantity') {
+  function handleFocusNextInput(nextInput: keyof FormInputs) {
     setFocus(nextInput);
   }
+
+  function handleOnKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Shift') {
+      setIsReverse(true);
+    }
+    if (event.key === 'Tab' && !event.shiftKey) {
+      setIsReverse(false);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleOnKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleOnKeyDown);
+    };
+  }, []);
 
   return (
     <Dialog.Portal>
@@ -116,13 +135,28 @@ export function CreateProductDialog() {
                   options={categoriesOptions}
                   styles={styles}
                   {...field}
-                  onFocus={(ev) => console.log(ev)}
-                  onBlur={(ev) => {
-                    console.log(ev);
-                    if (ev.relatedTarget?.id === 'image-url') {
+                  onFocus={(event) => {
+                    if (event.relatedTarget?.id === 'price') {
+                      if (isReverse) {
+                        setNextInput('price');
+                      } else {
+                        setNextInput('imageUrl');
+                      }
+                    }
+                    if (event.relatedTarget?.id === 'image-url') {
+                      if (isReverse) {
+                        setNextInput('imageUrl');
+                      } else {
+                        setNextInput('price');
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    if (isReverse) {
+                      handleFocusNextInput('price');
                       return;
                     }
-                    handleFocusNextinput('imageUrl');
+                    handleFocusNextInput(nextInput);
                   }}
                 />
               )}
@@ -155,7 +189,29 @@ export function CreateProductDialog() {
                   options={discountOptions}
                   styles={styles}
                   {...field}
-                  onBlur={() => handleFocusNextinput('quantity')}
+                  onFocus={(event) => {
+                    if (event.relatedTarget?.id === 'image-url') {
+                      if (isReverse) {
+                        setNextInput('imageUrl');
+                      } else {
+                        setNextInput('quantity');
+                      }
+                    }
+                    if (event.relatedTarget?.id === 'quantity') {
+                      if (isReverse) {
+                        setNextInput('quantity');
+                      } else {
+                        setNextInput('imageUrl');
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    if (isReverse) {
+                      handleFocusNextInput('imageUrl');
+                      return;
+                    }
+                    handleFocusNextInput(nextInput);
+                  }}
                 />
               )}
             />
