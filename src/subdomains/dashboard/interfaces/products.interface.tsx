@@ -67,7 +67,7 @@ export function ProductsInterface({
         </h2>
         <Dialog.Root>
           <Dialog.Trigger asChild>
-            <button className="flex items-center gap-1 rounded-full bg-green-400 p-2 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
+            <button className="flex items-center gap-1 rounded-full bg-green-400 px-3 py-2 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
               <PlusIcon className="h-4 w-4 text-zinc-800" />
               <span className="text-sm font-semibold text-zinc-800">
                 Create product

@@ -1,6 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import Select from 'react-select';
 import { XIcon } from 'lucide-react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { styles } from '@shared/configs/react-select-styles.config';
 
@@ -14,7 +17,32 @@ const discountOptions = [
   { value: '20', label: '20%' },
 ];
 
+const formSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.number().positive(),
+  categories: z.array(z.string()),
+  imageUrl: z.string().url(),
+  quantity: z.number().int().positive(),
+  discount: z.number(),
+});
+
+type FormInputs = z.infer<typeof formSchema>;
+
 export function CreateProductDialog() {
+  const { control, handleSubmit, register, setFocus } = useForm<FormInputs>({
+    resolver: zodResolver(formSchema),
+    mode: 'all',
+  });
+
+  function handleOnSubmit(data: FormInputs) {
+    console.log(data);
+  }
+
+  function handleFocusNextinput(nextInput: 'imageUrl' | 'quantity') {
+    setFocus(nextInput);
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black/80" />
@@ -35,16 +63,17 @@ export function CreateProductDialog() {
         <Dialog.Description className="mt-1 text-sm text-zinc-400">
           Create a new product here. Click save when you&apos;re done.
         </Dialog.Description>
-        <form action="">
+        <form onSubmit={handleSubmit(handleOnSubmit)} action="">
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="name" className="font-medium text-zinc-300">
               Name
             </label>
             <input
               id="name"
-              name="name"
+              type="text"
               defaultValue="Golden Beats Headphones"
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              {...register('name')}
             />
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
@@ -53,8 +82,10 @@ export function CreateProductDialog() {
             </label>
             <input
               id="description"
+              type="text"
               defaultValue="Beats Studio delivers the perfect blend of design culture, creative culture, and engineering coming together."
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              {...register('description')}
             />
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
@@ -66,21 +97,35 @@ export function CreateProductDialog() {
               type="number"
               defaultValue="30"
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              {...register('price')}
             />
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="categories" className="font-medium text-zinc-300">
               Categories
             </label>
-            <Select
-              id="product-categories"
-              inputId="categories"
-              isMulti
-              isSearchable
+            <Controller
+              control={control}
               name="categories"
-              defaultValue={[categoriesOptions[0]]}
-              options={categoriesOptions}
-              styles={styles}
+              render={({ field }) => (
+                <Select
+                  inputId="categories"
+                  isMulti
+                  isSearchable
+                  defaultValue={[categoriesOptions[0]]}
+                  options={categoriesOptions}
+                  styles={styles}
+                  {...field}
+                  onFocus={(ev) => console.log(ev)}
+                  onBlur={(ev) => {
+                    console.log(ev);
+                    if (ev.relatedTarget?.id === 'image-url') {
+                      return;
+                    }
+                    handleFocusNextinput('imageUrl');
+                  }}
+                />
+              )}
             />
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
@@ -92,6 +137,27 @@ export function CreateProductDialog() {
               type="url"
               defaultValue="https://images.unsplash.com/photo-1545127398-14699f92334b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              {...register('imageUrl')}
+            />
+          </fieldset>
+          <fieldset className="mt-3 flex flex-col gap-1">
+            <label htmlFor="discount" className="font-medium text-zinc-300">
+              Discount
+            </label>
+            <Controller
+              control={control}
+              name="discount"
+              render={({ field }) => (
+                <Select
+                  inputId="discount"
+                  isSearchable
+                  defaultValue={discountOptions[0]}
+                  options={discountOptions}
+                  styles={styles}
+                  {...field}
+                  onBlur={() => handleFocusNextinput('quantity')}
+                />
+              )}
             />
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
@@ -103,20 +169,7 @@ export function CreateProductDialog() {
               type="number"
               defaultValue={10}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
-            />
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
-            <label htmlFor="discount" className="font-medium text-zinc-300">
-              Discount
-            </label>
-            <Select
-              id="discount"
-              inputId="discount"
-              isSearchable
-              name="discount"
-              defaultValue={discountOptions[0]}
-              options={discountOptions}
-              styles={styles}
+              {...register('quantity')}
             />
           </fieldset>
           <div className="mt-6 flex justify-end">
