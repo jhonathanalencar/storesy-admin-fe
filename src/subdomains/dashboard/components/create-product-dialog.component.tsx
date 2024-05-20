@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { styles } from '@shared/configs/react-select-styles.config';
 import type { TCategory, TDiscount } from '../types';
+import { addProductAction } from '../actions';
 
 const formSchema = z.object({
   name: z
@@ -99,8 +100,15 @@ export function CreateProductDialog({
   const [nextInput, setNextInput] = useState<keyof FormInputs>('imageUrl');
   const [isReverse, setIsReverse] = useState(false);
 
-  function handleOnSubmit(data: FormInputs) {
-    console.log(data);
+  async function handleOnSubmit(data: FormInputs) {
+    const categories = data.categories.map((category) => category.value);
+    const discountId = data.discount.value;
+    const result = await addProductAction({ ...data, categories, discountId });
+    if (result?.error) {
+      alert(result.error.message);
+      return;
+    }
+    alert('Product created');
   }
 
   function handleFocusNextInput(nextInput: keyof FormInputs) {

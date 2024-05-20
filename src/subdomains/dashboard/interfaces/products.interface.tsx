@@ -209,9 +209,11 @@ export function ProductsInterface({
                         </span>
                       </td>
                       <td className="p-2 text-left text-sm font-medium text-zinc-300">
-                        {Intl.DateTimeFormat('en-US', {
-                          dateStyle: 'medium',
-                        }).format(new Date(product.releasedDate))}
+                        {product.releasedDate
+                          ? Intl.DateTimeFormat('en-US', {
+                              dateStyle: 'medium',
+                            }).format(new Date(product.releasedDate))
+                          : 'not released'}
                       </td>
                       <td className="p-2 text-zinc-200">
                         <div className="flex justify-end">
