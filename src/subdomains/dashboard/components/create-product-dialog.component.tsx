@@ -131,7 +131,7 @@ export function CreateProductDialog() {
           Create a new product here. Click save when you&apos;re done.
         </Dialog.Description>
         <form onSubmit={handleSubmit(handleOnSubmit)} action="">
-          <fieldset className="mt-3 flex flex-col gap-1">
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="name" className="font-medium text-zinc-300">
               Name
             </label>
@@ -150,8 +150,8 @@ export function CreateProductDialog() {
                 {errors.name.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="description" className="font-medium text-zinc-300">
               Description
             </label>
@@ -174,8 +174,8 @@ export function CreateProductDialog() {
                 {errors.description.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="price" className="font-medium text-zinc-300">
               Price
             </label>
@@ -194,8 +194,8 @@ export function CreateProductDialog() {
                 {errors.price.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="categories" className="font-medium text-zinc-300">
               Categories
             </label>
@@ -270,8 +270,8 @@ export function CreateProductDialog() {
                 {errors.categories.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="image-url" className="font-medium text-zinc-300">
               Image URL
             </label>
@@ -294,8 +294,8 @@ export function CreateProductDialog() {
                 {errors.imageUrl.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="discount" className="font-medium text-zinc-300">
               Discount
             </label>
@@ -369,8 +369,8 @@ export function CreateProductDialog() {
                 {errors.discount.message}
               </p>
             ) : null}
-          </fieldset>
-          <fieldset className="mt-3 flex flex-col gap-1">
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
             <label htmlFor="quantity" className="font-medium text-zinc-300">
               Quantity
             </label>
@@ -393,7 +393,7 @@ export function CreateProductDialog() {
                 {errors.quantity.message}
               </p>
             ) : null}
-          </fieldset>
+          </div>
           <div className="mt-6 flex justify-end">
             <button
               type="submit"
