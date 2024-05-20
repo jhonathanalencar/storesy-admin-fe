@@ -7,11 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { styles } from '@shared/configs/react-select-styles.config';
-
-const categoriesOptions = [
-  { value: 'headphone', label: 'Headphone' },
-  { value: 'video-games', label: 'Video Games' },
-];
+import type { TCategory } from '../types';
 
 const discountOptions = [
   { value: '10', label: '10%' },
@@ -61,7 +57,18 @@ const formSchema = z.object({
 
 type FormInputs = z.infer<typeof formSchema>;
 
-export function CreateProductDialog() {
+interface CreateProductDialogProps {
+  categories: TCategory[] | undefined;
+}
+
+export function CreateProductDialog({ categories }: CreateProductDialogProps) {
+  const categoriesOptions = categories?.map((category) => {
+    return {
+      value: category.categoryId,
+      label: category.name,
+    };
+  });
+
   const {
     control,
     handleSubmit,
@@ -76,7 +83,7 @@ export function CreateProductDialog() {
       description:
         'Beats Studio delivers the perfect blend of design culture, creative culture, and engineering coming together.',
       price: 30.0,
-      categories: [categoriesOptions[0]],
+      categories: [categoriesOptions?.[0]],
       imageUrl:
         'https://images.unsplash.com/photo-1545127398-14699f92334b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       discount: discountOptions[0],

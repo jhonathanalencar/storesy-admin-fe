@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 
-import type { TProduct } from '../types';
+import type { TCategory, TProduct } from '../types';
 import { searchAction } from '../actions';
 
 import { Checkbox } from '@shared/components/checkbox.component';
@@ -16,12 +16,14 @@ import { CreateProductDialog } from '../components/create-product-dialog.compone
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
+  categories: TCategory[] | undefined;
   currentPage: number;
   totalPages: number;
 }
 
 export function ProductsInterface({
   products,
+  categories,
   currentPage,
   totalPages,
 }: ProductsInterfaceProps) {
@@ -74,7 +76,7 @@ export function ProductsInterface({
               </span>
             </button>
           </Dialog.Trigger>
-          <CreateProductDialog />
+          <CreateProductDialog categories={categories} />
         </Dialog.Root>
       </div>
       <form

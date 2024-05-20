@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { getSession } from '@shared/libs/get-session.lib';
-import { getProducts } from '../../queries';
+import { getCategories, getProducts } from '../../queries';
 
 import { ProductsInterface } from '../../interfaces/products.interface';
 
@@ -22,11 +22,13 @@ export async function ProductsContainerLoader({
   }
   try {
     const data = await getProducts({ page, query, limit });
+    const categories = await getCategories();
     const totalPages = data?.total ? Math.ceil(data.total / limit) : 0;
 
     return (
       <ProductsInterface
         products={data?.products}
+        categories={categories}
         currentPage={page}
         totalPages={totalPages}
       />
