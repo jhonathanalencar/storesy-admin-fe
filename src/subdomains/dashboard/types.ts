@@ -20,3 +20,9 @@ export type TCategory = {
   slug: string;
   department: string;
 };
+
+export type TDiscount = {
+  discountId: string;
+  discountPercent: number;
+  active: boolean;
+};

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { TCategory, TProduct } from './types';
+import type { TCategory, TDiscount, TProduct } from './types';
 
 type GetProductsInput = {
   page: number;
@@ -51,6 +51,16 @@ export async function getCategories(): Promise<
   GetCategoriesOutput | undefined
 > {
   const response = await fetch(`${process.env.CATALOG_API_URL}/category`);
+  if (!response.ok) return undefined;
+  return response.json();
+}
+
+export type GetDiscountsOutput = {
+  discounts: TDiscount[];
+};
+
+export async function getDiscounts(): Promise<GetDiscountsOutput | undefined> {
+  const response = await fetch(`${process.env.CATALOG_API_URL}/discount`);
   if (!response.ok) return undefined;
   return response.json();
 }
