@@ -13,3 +13,10 @@ export type TProduct = {
   rateAmount: number;
   totalScore: number;
 };
+
+export type TCategory = {
+  categoryId: string;
+  name: string;
+  slug: string;
+  department: string;
+};

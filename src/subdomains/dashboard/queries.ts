@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { TProduct } from './types';
+import type { TCategory, TProduct } from './types';
 
 type GetProductsInput = {
   page: number;
@@ -42,5 +42,15 @@ export async function addProduct(input: AddProductInput): Promise<void> {
     body: JSON.stringify(input),
   });
   if (!response.ok) throw new Error('Error creating user');
+  return response.json();
+}
+
+export type GetCategoriesOutput = TCategory[];
+
+export async function getCategories(): Promise<
+  GetCategoriesOutput | undefined
+> {
+  const response = await fetch(`${process.env.CATALOG_API_URL}/category`);
+  if (!response.ok) return undefined;
   return response.json();
 }
