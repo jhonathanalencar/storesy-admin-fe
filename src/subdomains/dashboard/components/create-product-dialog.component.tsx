@@ -19,21 +19,69 @@ const discountOptions = [
 ];
 
 const formSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  price: z.number().positive(),
-  categories: z.array(z.string()),
-  imageUrl: z.string().url(),
-  quantity: z.number().int().positive(),
-  discount: z.number(),
+  name: z
+    .string({ required_error: 'name is required' })
+    .trim()
+    .min(2, 'name must contain at least 2 characters'),
+  description: z
+    .string({ required_error: 'description is required' })
+    .trim()
+    .min(1, 'description is required'),
+  price: z
+    .number({
+      required_error: 'price is required',
+      invalid_type_error: 'price must be a number',
+    })
+    .positive(),
+  categories: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    }),
+    { required_error: 'categories is required' }
+  ),
+  imageUrl: z
+    .string({ required_error: 'imageUrl is required' })
+    .url('invalid url'),
+  quantity: z
+    .number({
+      required_error: 'quantity is required',
+      invalid_type_error: 'quantity must be a number',
+    })
+    .int()
+    .positive(),
+  discount: z.object(
+    {
+      label: z.string(),
+      value: z.string(),
+    },
+    { required_error: 'discount is required' }
+  ),
 });
 
 type FormInputs = z.infer<typeof formSchema>;
 
 export function CreateProductDialog() {
-  const { control, handleSubmit, register, setFocus } = useForm<FormInputs>({
+  const {
+    control,
+    handleSubmit,
+    register,
+    setFocus,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
     mode: 'all',
+    defaultValues: {
+      name: 'Golden Beats Headphones',
+      description:
+        'Beats Studio delivers the perfect blend of design culture, creative culture, and engineering coming together.',
+      price: 30.0,
+      categories: [categoriesOptions[0]],
+      imageUrl:
+        'https://images.unsplash.com/photo-1545127398-14699f92334b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      discount: discountOptions[0],
+      quantity: 10,
+    },
   });
   const [nextInput, setNextInput] = useState<keyof FormInputs>('imageUrl');
   const [isReverse, setIsReverse] = useState(false);
@@ -90,22 +138,42 @@ export function CreateProductDialog() {
             <input
               id="name"
               type="text"
-              defaultValue="Golden Beats Headphones"
+              aria-invalid={!!errors.name}
+              aria-describedby="name-hint"
+              required
+              disabled={isSubmitting}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('name')}
             />
+            {errors.name ? (
+              <p role="alert" id="name-hint" className="text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
-            <label className="font-medium text-zinc-300" htmlFor="description">
+            <label htmlFor="description" className="font-medium text-zinc-300">
               Description
             </label>
             <input
               id="description"
               type="text"
-              defaultValue="Beats Studio delivers the perfect blend of design culture, creative culture, and engineering coming together."
+              aria-invalid={!!errors.description}
+              aria-describedby="description-hint"
+              required
+              disabled={isSubmitting}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('description')}
             />
+            {errors.description ? (
+              <p
+                role="alert"
+                id="description-hint"
+                className="text-sm text-red-500"
+              >
+                {errors.description.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="price" className="font-medium text-zinc-300">
@@ -113,11 +181,19 @@ export function CreateProductDialog() {
             </label>
             <input
               id="price"
-              type="number"
-              defaultValue="30"
+              type="text"
+              aria-invalid={!!errors.price}
+              aria-describedby="price-hint"
+              required
+              disabled={isSubmitting}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
-              {...register('price')}
+              {...register('price', { valueAsNumber: true })}
             />
+            {errors.price ? (
+              <p role="alert" id="price-hint" className="text-sm text-red-500">
+                {errors.price.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="categories" className="font-medium text-zinc-300">
@@ -129,13 +205,17 @@ export function CreateProductDialog() {
               render={({ field }) => (
                 <Select
                   inputId="categories"
+                  aria-invalid={!!errors.categories}
+                  aria-errormessage="categories-hint"
+                  required
+                  isDisabled={isSubmitting}
                   isMulti
                   isSearchable
-                  defaultValue={[categoriesOptions[0]]}
                   options={categoriesOptions}
                   styles={styles}
                   {...field}
                   onFocus={(event) => {
+                    // Tab behavior
                     if (event.relatedTarget?.id === 'price') {
                       if (isReverse) {
                         setNextInput('price');
@@ -151,7 +231,27 @@ export function CreateProductDialog() {
                       }
                     }
                   }}
-                  onBlur={() => {
+                  onBlur={(event) => {
+                    // Click behavior
+                    if (
+                      event.relatedTarget?.id !== 'price' &&
+                      event.relatedTarget?.id !== 'image-url'
+                    ) {
+                      handleFocusNextInput(
+                        event.relatedTarget?.id as keyof FormInputs
+                      );
+                      return;
+                    }
+                    if (event.relatedTarget?.id === 'price') {
+                      handleFocusNextInput('price');
+                      return;
+                    }
+                    if (event.relatedTarget?.id === 'image-url') {
+                      handleFocusNextInput('imageUrl');
+                      return;
+                    }
+
+                    // Tab behavior
                     if (isReverse) {
                       handleFocusNextInput('price');
                       return;
@@ -161,6 +261,15 @@ export function CreateProductDialog() {
                 />
               )}
             />
+            {errors.categories ? (
+              <p
+                role="alert"
+                id="categories-hint"
+                className="text-sm text-red-500"
+              >
+                {errors.categories.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="image-url" className="font-medium text-zinc-300">
@@ -169,10 +278,22 @@ export function CreateProductDialog() {
             <input
               id="image-url"
               type="url"
-              defaultValue="https://images.unsplash.com/photo-1545127398-14699f92334b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              aria-invalid={!!errors.imageUrl}
+              aria-describedby="image-url-hint"
+              required
+              disabled={isSubmitting}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('imageUrl')}
             />
+            {errors.imageUrl ? (
+              <p
+                role="alert"
+                id="image-url-hint"
+                className="text-sm text-red-500"
+              >
+                {errors.imageUrl.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="discount" className="font-medium text-zinc-300">
@@ -184,12 +305,16 @@ export function CreateProductDialog() {
               render={({ field }) => (
                 <Select
                   inputId="discount"
+                  aria-invalid={!!errors.discount}
+                  aria-errormessage="discount-hint"
+                  required
+                  isDisabled={isSubmitting}
                   isSearchable
-                  defaultValue={discountOptions[0]}
                   options={discountOptions}
                   styles={styles}
                   {...field}
                   onFocus={(event) => {
+                    // Tab behavior
                     if (event.relatedTarget?.id === 'image-url') {
                       if (isReverse) {
                         setNextInput('imageUrl');
@@ -205,7 +330,27 @@ export function CreateProductDialog() {
                       }
                     }
                   }}
-                  onBlur={() => {
+                  onBlur={(event) => {
+                    // Click behavior
+                    if (
+                      event.relatedTarget?.id !== 'quantity' &&
+                      event.relatedTarget?.id !== 'image-url'
+                    ) {
+                      handleFocusNextInput(
+                        event.relatedTarget?.id as keyof FormInputs
+                      );
+                      return;
+                    }
+                    if (event.relatedTarget?.id === 'quantity') {
+                      handleFocusNextInput('quantity');
+                      return;
+                    }
+                    if (event.relatedTarget?.id === 'image-url') {
+                      handleFocusNextInput('imageUrl');
+                      return;
+                    }
+
+                    // Tab behavior
                     if (isReverse) {
                       handleFocusNextInput('imageUrl');
                       return;
@@ -215,6 +360,15 @@ export function CreateProductDialog() {
                 />
               )}
             />
+            {errors.discount ? (
+              <p
+                role="alert"
+                id="discount-hint"
+                className="text-sm text-red-500"
+              >
+                {errors.discount.message}
+              </p>
+            ) : null}
           </fieldset>
           <fieldset className="mt-3 flex flex-col gap-1">
             <label htmlFor="quantity" className="font-medium text-zinc-300">
@@ -223,14 +377,27 @@ export function CreateProductDialog() {
             <input
               id="quantity"
               type="number"
-              defaultValue={10}
+              aria-invalid={!!errors.quantity}
+              aria-describedby="quantity-hint"
+              required
+              disabled={isSubmitting}
               className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
-              {...register('quantity')}
+              {...register('quantity', { valueAsNumber: true })}
             />
+            {errors.quantity ? (
+              <p
+                role="alert"
+                id="quantity-hint"
+                className="text-sm text-red-500"
+              >
+                {errors.quantity.message}
+              </p>
+            ) : null}
           </fieldset>
           <div className="mt-6 flex justify-end">
             <button
               type="submit"
+              disabled={isSubmitting || !isValid}
               className="rounded bg-green-400 px-6 py-3 text-sm font-bold uppercase text-zinc-900 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
             >
               Save
