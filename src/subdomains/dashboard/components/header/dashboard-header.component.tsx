@@ -40,21 +40,21 @@ export async function DashboardHeader() {
         </div>
       </div>
       <nav aria-label="Main menu" className="flex items-center gap-2">
-        <DashboardLink href="/dashboard/products" title="Products">
+        <DashboardLink href="/dashboard/products" title="See products">
           <ShoppingCartIcon className="h-4 w-4 text-green-400" />
           <span className="hidden text-sm font-medium sm:block">Products</span>
         </DashboardLink>
-        <DashboardLink href="/dashboard/categories" title="Categories">
+        <DashboardLink href="/dashboard/categories" title="See categories">
           <TagIcon className="h-4 w-4 text-green-400" />
           <span className="hidden text-sm font-medium sm:block">
             Categories
           </span>
         </DashboardLink>
-        <DashboardLink href="/dashboard/discounts" title="Discounts">
+        <DashboardLink href="/dashboard/discounts" title="See discounts">
           <PercentIcon className="h-4 w-4 text-green-400" />
           <span className="hidden text-sm font-medium sm:block">Discounts</span>
         </DashboardLink>
-        <DashboardLink href="/dashboard/users" title="Users">
+        <DashboardLink href="/dashboard/users" title="See users">
           <UserIcon className="h-4 w-4 text-green-400" />
           <span className="hidden text-sm font-medium sm:block">Users</span>
         </DashboardLink>

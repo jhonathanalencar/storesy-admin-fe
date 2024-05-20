@@ -131,17 +131,17 @@ export function ProductsInterface({
           <caption className="sr-only">Current Products</caption>
           <thead className="border-b border-zinc-800 bg-zinc-950">
             <tr>
-              <th className="p-2 text-left text-sm">
+              <td className="p-2 text-left text-sm">
                 <Checkbox
-                  id="select all"
+                  id="select-all"
                   labelText="Select all products"
                   disabled={isDisabled}
                   onCheckedChange={handleSelectAll}
                   checked={isAllSelected}
                   className="disabled:cursor-not-allowed disabled:opacity-70"
                 />
-              </th>
-              <th className="h-10 p-2 text-left text-sm"></th>
+              </td>
+              <td className="h-10 p-2 text-left text-sm"></td>
               <th className="h-10 p-2 text-left text-sm">Name</th>
               <th className="h-10 p-2 text-left text-sm">Price</th>
               <th className="h-10 p-2 text-left text-sm">Quantity</th>
@@ -149,7 +149,7 @@ export function ProductsInterface({
               <th className="whitespace-nowrap p-2 text-left text-sm">
                 Release Date
               </th>
-              <th className="min-w-[80px]"></th>
+              <td className="min-w-[80px]"></td>
             </tr>
           </thead>
           <tbody>
@@ -199,7 +199,7 @@ export function ProductsInterface({
                       <td className="p-2 text-left text-sm font-medium text-zinc-300">
                         <span
                           data-active={product.active}
-                          className="rounded-full bg-green-400 px-2 py-1 data-[active=false]:bg-red-500 data-[active=true]:bg-green-500 data-[active=false]:text-red-950 data-[active=true]:text-green-950"
+                          className="rounded-full bg-green-400 px-2 py-1 data-[active=false]:bg-red-500 data-[active=true]:bg-green-500 data-[active=false]:text-zinc-900 data-[active=true]:text-green-950"
                         >
                           {product.active ? 'Active' : 'Inactive'}
                         </span>
