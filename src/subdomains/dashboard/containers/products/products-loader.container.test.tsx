@@ -42,6 +42,8 @@ const mockProducts: TProduct[] = [
 const mockGetProducts = jest.fn();
 jest.mock('../../queries', () => ({
   getProducts: () => mockGetProducts(),
+  getCategories: jest.fn(),
+  getDiscounts: jest.fn(),
 }));
 jest.spyOn(console, 'error').mockImplementation(() => jest.fn());
 jest.mock('../../components/pagination.component', () => ({
@@ -97,7 +99,9 @@ describe('<ProductsContainerLoader>', () => {
     });
 
     it('should render error message when getProducts function throws an error', async () => {
-      mockGetProducts.mockRejectedValue(new Error('Error'));
+      mockGetProducts.mockImplementation(() => {
+        throw new Error('Error');
+      });
       await setup();
 
       const errorMessage = screen.getByText(/something went wrong/i);

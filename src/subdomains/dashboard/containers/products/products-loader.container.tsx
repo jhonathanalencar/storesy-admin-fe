@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { getSession } from '@shared/libs/get-session.lib';
-import { getProducts } from '../../queries';
+import { getCategories, getDiscounts, getProducts } from '../../queries';
 
 import { ProductsInterface } from '../../interfaces/products.interface';
 
@@ -21,12 +21,18 @@ export async function ProductsContainerLoader({
     redirect('/auth/login?redirect_to=/dashboard/products');
   }
   try {
-    const data = await getProducts({ page, query, limit });
+    const [data, categories, discounts] = await Promise.all([
+      getProducts({ page, query, limit }),
+      getCategories(),
+      getDiscounts(),
+    ]);
     const totalPages = data?.total ? Math.ceil(data.total / limit) : 0;
 
     return (
       <ProductsInterface
         products={data?.products}
+        categories={categories}
+        discounts={discounts?.discounts.filter((discount) => discount.active)}
         currentPage={page}
         totalPages={totalPages}
       />

@@ -32,11 +32,11 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
 
   return (
     <div className="flex items-center justify-end gap-6 py-4">
-      <span className="text-sm font-medium text-zinc-500 md:text-base">
+      <span className="text-sm font-medium text-zinc-400 md:text-base">
         Page {currentPage} of {totalPages}
       </span>
       <div role="navigation" className="flex items-center gap-2">
-        {isFirstPage ? (
+        {isFirstPage || 1 === currentPage - 1 ? (
           <span
             aria-disabled
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"
@@ -99,7 +99,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
           </Link>
         )}
 
-        {isLastPage ? (
+        {isLastPage || totalPages === currentPage + 1 ? (
           <span
             aria-disabled
             className="h-7 w-7 rounded bg-zinc-800 p-1.5 opacity-90 ring-1 ring-inset ring-zinc-700"

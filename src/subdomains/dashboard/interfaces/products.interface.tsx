@@ -3,23 +3,29 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { SearchIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
+import * as Dialog from '@radix-ui/react-dialog';
 
-import type { TProduct } from '../types';
+import type { TCategory, TDiscount, TProduct } from '../types';
 import { searchAction } from '../actions';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
 import { Pagination } from '../components/pagination.component';
+import { CreateProductDialog } from '../components/create-product-dialog.component';
 
 interface ProductsInterfaceProps {
   products: TProduct[] | undefined;
+  categories: TCategory[] | undefined;
+  discounts: TDiscount[] | undefined;
   currentPage: number;
   totalPages: number;
 }
 
 export function ProductsInterface({
   products,
+  categories,
+  discounts,
   currentPage,
   totalPages,
 }: ProductsInterfaceProps) {
@@ -56,9 +62,25 @@ export function ProductsInterface({
       aria-labelledby="product-management-section-heading"
       className="mx-auto w-full max-w-7xl p-2 pb-10 md:p-4 md:pb-10"
     >
-      <h2 id="product-management-section-heading" className="text-xl font-bold">
-        Products
-      </h2>
+      <div className="flex items-center gap-3">
+        <h2
+          id="product-management-section-heading"
+          className="text-xl font-bold"
+        >
+          Products
+        </h2>
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <button className="flex items-center gap-1 rounded-full bg-green-400 px-3 py-2 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
+              <PlusIcon className="h-4 w-4 text-zinc-800" />
+              <span className="text-sm font-semibold text-zinc-800">
+                Create product
+              </span>
+            </button>
+          </Dialog.Trigger>
+          <CreateProductDialog categories={categories} discounts={discounts} />
+        </Dialog.Root>
+      </div>
       <form
         action={searchAction}
         className="my-5 flex w-fit items-center gap-2 rounded-md border border-zinc-700 p-2 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950"
@@ -71,7 +93,7 @@ export function ProductsInterface({
           id="search-textbox"
           type="text"
           name="query"
-          aria-label="Search"
+          aria-label="Search products"
           placeholder="Search..."
           autoComplete="name"
           defaultValue={query ?? ''}
@@ -113,17 +135,17 @@ export function ProductsInterface({
           <caption className="sr-only">Current Products</caption>
           <thead className="border-b border-zinc-800 bg-zinc-950">
             <tr>
-              <th className="p-2 text-left text-sm">
+              <td className="p-2 text-left text-sm">
                 <Checkbox
-                  id="select all"
+                  id="select-all"
                   labelText="Select all products"
                   disabled={isDisabled}
                   onCheckedChange={handleSelectAll}
                   checked={isAllSelected}
                   className="disabled:cursor-not-allowed disabled:opacity-70"
                 />
-              </th>
-              <th className="h-10 p-2 text-left text-sm"></th>
+              </td>
+              <td className="h-10 p-2 text-left text-sm"></td>
               <th className="h-10 p-2 text-left text-sm">Name</th>
               <th className="h-10 p-2 text-left text-sm">Price</th>
               <th className="h-10 p-2 text-left text-sm">Quantity</th>
@@ -131,7 +153,7 @@ export function ProductsInterface({
               <th className="whitespace-nowrap p-2 text-left text-sm">
                 Release Date
               </th>
-              <th className="min-w-[80px]"></th>
+              <td className="min-w-[80px]"></td>
             </tr>
           </thead>
           <tbody>
@@ -181,15 +203,17 @@ export function ProductsInterface({
                       <td className="p-2 text-left text-sm font-medium text-zinc-300">
                         <span
                           data-active={product.active}
-                          className="rounded-full bg-green-400 px-2 py-1 data-[active=false]:bg-red-500 data-[active=true]:bg-green-500 data-[active=false]:text-red-950 data-[active=true]:text-green-950"
+                          className="rounded-full bg-green-400 px-2 py-1 data-[active=false]:bg-red-500 data-[active=true]:bg-green-500 data-[active=false]:text-zinc-900 data-[active=true]:text-green-950"
                         >
                           {product.active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
                       <td className="p-2 text-left text-sm font-medium text-zinc-300">
-                        {Intl.DateTimeFormat('en-US', {
-                          dateStyle: 'medium',
-                        }).format(new Date(product.releasedDate))}
+                        {product.releasedDate
+                          ? Intl.DateTimeFormat('en-US', {
+                              dateStyle: 'medium',
+                            }).format(new Date(product.releasedDate))
+                          : 'not released'}
                       </td>
                       <td className="p-2 text-zinc-200">
                         <div className="flex justify-end">

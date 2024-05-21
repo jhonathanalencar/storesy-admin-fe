@@ -7,9 +7,22 @@ export type TProduct = {
   categories: string[];
   imageUrl: string;
   quantity: number;
-  releasedDate: string;
   discountPercent: number;
   active: boolean;
   rateAmount: number;
   totalScore: number;
+  releasedDate?: string;
+};
+
+export type TCategory = {
+  categoryId: string;
+  name: string;
+  slug: string;
+  department: string;
+};
+
+export type TDiscount = {
+  discountId: string;
+  discountPercent: number;
+  active: boolean;
 };
