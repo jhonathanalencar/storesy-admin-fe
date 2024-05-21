@@ -6,8 +6,10 @@ import { revalidatePath } from 'next/cache';
 import { signOut } from '@shared/libs/auth.lib';
 import {
   AddProductInput,
+  DeleteProductInput,
   ReleaseProductInput,
   addProduct,
+  deleteProduct,
   releaseProduct,
 } from './queries';
 
@@ -43,7 +45,21 @@ export async function releaseProductAction(data: ReleaseProductInput) {
     await releaseProduct(data);
   } catch (error) {
     console.error(error);
-    return { error: { message: 'Failed to release product' } };
+    return {
+      error: { message: 'Failed to release product' },
+    };
+  }
+  revalidatePath('/dashboard/products');
+}
+
+export async function deleteProductAction(data: DeleteProductInput) {
+  try {
+    await deleteProduct(data);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to delete product' },
+    };
   }
   revalidatePath('/dashboard/products');
 }

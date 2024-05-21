@@ -3,7 +3,7 @@
 import { useTransition } from 'react';
 import { EllipsisIcon } from 'lucide-react';
 
-import { releaseProductAction } from '../actions';
+import { deleteProductAction, releaseProductAction } from '../actions';
 
 import { DropdownMenu } from '@shared/components/dropdown-menu.component';
 
@@ -31,10 +31,32 @@ export function DropdownMenuOptions({
 
       <DropdownMenu.Content>
         <DropdownMenu.Item>edit</DropdownMenu.Item>
-        <DropdownMenu.Item>delete</DropdownMenu.Item>
         <DropdownMenu.Item>
           <form
-            action={async () => {
+            action={() => {
+              startTransition(async () => {
+                const data = await deleteProductAction({ productId });
+                if (data?.error) {
+                  alert(data.error.message);
+                  return;
+                }
+                alert('Product deleted');
+              });
+            }}
+            className="h-full w-full"
+          >
+            <button
+              type="submit"
+              disabled={isPending}
+              className="h-full w-full text-left disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              delete
+            </button>
+          </form>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <form
+            action={() => {
               startTransition(async () => {
                 const data = await releaseProductAction({ productId });
                 if (data?.error) {

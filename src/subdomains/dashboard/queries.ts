@@ -84,3 +84,18 @@ export async function releaseProduct(
   if (!response.ok) throw new Error('Error occurred');
   return;
 }
+
+export type DeleteProductInput = {
+  productId: string;
+};
+
+export async function deleteProduct(input: DeleteProductInput) {
+  const response = await fetch(
+    `${process.env.CATALOG_API_URL}/products/${input.productId}`,
+    {
+      method: 'DELETE',
+    }
+  );
+  if (!response.ok) throw new Error('Error deleting product');
+  return;
+}
