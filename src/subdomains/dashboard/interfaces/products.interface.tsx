@@ -7,7 +7,11 @@ import { PlusIcon, SearchIcon } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 
 import type { TCategory, TDiscount, TProduct } from '../types';
-import { releaseSelectedProductsAction, searchAction } from '../actions';
+import {
+  deleteSelectedProductsAction,
+  releaseSelectedProductsAction,
+  searchAction,
+} from '../actions';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
@@ -139,13 +143,32 @@ export function ProductsInterface({
                   Release products
                 </button>
               </form>
-              <button
-                type="button"
-                disabled={isDisabled}
-                className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+              <form
+                action={() => {
+                  startTransition(async () => {
+                    const productIds = selectedProductIds.map((productId) => {
+                      return {
+                        productId,
+                      };
+                    });
+                    const data = await deleteSelectedProductsAction(productIds);
+                    if (data?.error) {
+                      alert(data.error.message);
+                      return;
+                    }
+                    alert('Products deleted');
+                  });
+                }}
+                className="flex"
               >
-                Delete products
-              </button>
+                <button
+                  type="submit"
+                  disabled={isDisabled || isPending}
+                  className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+                >
+                  Delete products
+                </button>
+              </form>
               <span className="text-sm font-medium">
                 {selectedProductIds.length} selected
               </span>

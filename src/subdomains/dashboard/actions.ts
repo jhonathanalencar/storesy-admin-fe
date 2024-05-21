@@ -78,3 +78,16 @@ export async function deleteProductAction(data: DeleteProductInput) {
   }
   revalidatePath('/dashboard/products');
 }
+
+export async function deleteSelectedProductsAction(data: DeleteProductInput[]) {
+  try {
+    const deleteProductPromises = data.map((input) => deleteProduct(input));
+    await Promise.all(deleteProductPromises);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to delete products' },
+    };
+  }
+  revalidatePath('/dashboard/products');
+}
