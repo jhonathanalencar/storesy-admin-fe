@@ -217,7 +217,10 @@ export function ProductsInterface({
                       </td>
                       <td className="p-2 text-zinc-200">
                         <div className="flex justify-end">
-                          <DropdownMenuOptions productName={product.name} />
+                          <DropdownMenuOptions
+                            productId={product.productId}
+                            productName={product.name}
+                          />
                         </div>
                       </td>
                     </tr>
