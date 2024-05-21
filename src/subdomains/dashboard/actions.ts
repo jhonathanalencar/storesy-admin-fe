@@ -52,6 +52,21 @@ export async function releaseProductAction(data: ReleaseProductInput) {
   revalidatePath('/dashboard/products');
 }
 
+export async function releaseSelectedProductsAction(
+  data: ReleaseProductInput[]
+) {
+  try {
+    const releaseProductPromises = data.map((input) => releaseProduct(input));
+    await Promise.all(releaseProductPromises);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to release products' },
+    };
+  }
+  revalidatePath('/dashboard/products');
+}
+
 export async function deleteProductAction(data: DeleteProductInput) {
   try {
     await deleteProduct(data);
@@ -59,6 +74,19 @@ export async function deleteProductAction(data: DeleteProductInput) {
     console.error(error);
     return {
       error: { message: 'Failed to delete product' },
+    };
+  }
+  revalidatePath('/dashboard/products');
+}
+
+export async function deleteSelectedProductsAction(data: DeleteProductInput[]) {
+  try {
+    const deleteProductPromises = data.map((input) => deleteProduct(input));
+    await Promise.all(deleteProductPromises);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to delete products' },
     };
   }
   revalidatePath('/dashboard/products');
