@@ -4,7 +4,12 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { signOut } from '@shared/libs/auth.lib';
-import { AddProductInput, addProduct } from './queries';
+import {
+  AddProductInput,
+  ReleaseProductInput,
+  addProduct,
+  releaseProduct,
+} from './queries';
 
 export async function signOutAction() {
   await signOut({
@@ -29,6 +34,16 @@ export async function addProductAction(data: AddProductInput) {
     return {
       error: { message: 'Unable to create product' },
     };
+  }
+  revalidatePath('/dashboard/products');
+}
+
+export async function releaseProductAction(data: ReleaseProductInput) {
+  try {
+    await releaseProduct(data);
+  } catch (error) {
+    console.error(error);
+    return { error: { message: 'Failed to release product' } };
   }
   revalidatePath('/dashboard/products');
 }

@@ -64,3 +64,23 @@ export async function getDiscounts(): Promise<GetDiscountsOutput | undefined> {
   if (!response.ok) return undefined;
   return response.json();
 }
+
+export type ReleaseProductInput = {
+  productId: string;
+};
+
+export async function releaseProduct(
+  input: ReleaseProductInput
+): Promise<void> {
+  const response = await fetch(
+    `${process.env.CATALOG_API_URL}/products/${input.productId}/release`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  if (!response.ok) throw new Error('Error occurred');
+  return;
+}
