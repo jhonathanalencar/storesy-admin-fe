@@ -1,6 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
+import Link from 'next/link';
 import { EllipsisIcon } from 'lucide-react';
 
 import { deleteProductAction, releaseProductAction } from '../actions';
@@ -30,7 +31,14 @@ export function DropdownMenuOptions({
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
-        <DropdownMenu.Item>edit</DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <Link
+            href="/dashboard/products/edit"
+            className="flex h-full w-full items-center"
+          >
+            edit
+          </Link>
+        </DropdownMenu.Item>
         <DropdownMenu.Item>
           <form
             action={() => {
