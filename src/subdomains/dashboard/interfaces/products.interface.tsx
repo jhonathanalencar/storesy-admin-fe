@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 
 import type { TCategory, TDiscount, TProduct } from '../types';
-import { searchAction } from '../actions';
+import { releaseSelectedProductsAction, searchAction } from '../actions';
 
 import { Checkbox } from '@shared/components/checkbox.component';
 import { DropdownMenuOptions } from '../components/dropdown-menu-options.component';
@@ -30,6 +30,7 @@ export function ProductsInterface({
   totalPages,
 }: ProductsInterfaceProps) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
 
@@ -111,13 +112,33 @@ export function ProductsInterface({
         <div className="flex h-10 items-center justify-end p-2">
           {selectedProductIds.length > 0 ? (
             <div className="flex items-center gap-4">
-              <button
-                type="button"
-                disabled={isDisabled}
-                className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+              <form
+                action={() => {
+                  startTransition(async () => {
+                    const productIds = selectedProductIds.map((productId) => {
+                      return {
+                        productId,
+                      };
+                    });
+                    const data =
+                      await releaseSelectedProductsAction(productIds);
+                    if (data?.error) {
+                      alert(data.error.message);
+                      return;
+                    }
+                    alert('Products released');
+                  });
+                }}
+                className="flex"
               >
-                Release products
-              </button>
+                <button
+                  type="submit"
+                  disabled={isDisabled || isPending}
+                  className="text-sm text-zinc-300 hover:text-zinc-200 hover:underline disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:text-zinc-300 disabled:hover:no-underline"
+                >
+                  Release products
+                </button>
+              </form>
               <button
                 type="button"
                 disabled={isDisabled}

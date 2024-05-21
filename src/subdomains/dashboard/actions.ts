@@ -52,6 +52,21 @@ export async function releaseProductAction(data: ReleaseProductInput) {
   revalidatePath('/dashboard/products');
 }
 
+export async function releaseSelectedProductsAction(
+  data: ReleaseProductInput[]
+) {
+  try {
+    const releaseProductPromises = data.map((input) => releaseProduct(input));
+    await Promise.all(releaseProductPromises);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to release products' },
+    };
+  }
+  revalidatePath('/dashboard/products');
+}
+
 export async function deleteProductAction(data: DeleteProductInput) {
   try {
     await deleteProduct(data);
