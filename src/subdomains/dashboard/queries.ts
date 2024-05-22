@@ -23,6 +23,22 @@ export async function getProducts(
   return response.json();
 }
 
+type GetProductInput = {
+  productId: string;
+};
+
+type GetProductOutput = TProduct;
+
+export async function getProduct(
+  input: GetProductInput
+): Promise<GetProductOutput | undefined> {
+  const response = await fetch(
+    `${process.env.CATALOG_API_URL}/products/${input.productId}`
+  );
+  if (!response.ok) return undefined;
+  return response.json();
+}
+
 export type AddProductInput = {
   name: string;
   description: string;

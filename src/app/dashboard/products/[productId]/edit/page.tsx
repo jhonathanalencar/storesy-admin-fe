@@ -1,5 +1,11 @@
 import { dashboardRoutes } from '@subdomains/dashboard/routes';
 
-export default function ProductsEditPage() {
-  return <dashboardRoutes.PRODUCTS_EDIT />;
+interface ProductsEditPageProps {
+  params: {
+    productId: string;
+  };
+}
+
+export default function ProductsEditPage({ params }: ProductsEditPageProps) {
+  return <dashboardRoutes.PRODUCTS_EDIT params={params} />;
 }
