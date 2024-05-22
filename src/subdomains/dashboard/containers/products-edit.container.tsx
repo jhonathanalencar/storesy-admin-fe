@@ -1,7 +1,7 @@
+import { getCategories, getDiscounts, getProduct } from '../queries';
+
 import { DashboardLayout } from '@shared/layouts/dashboard.layout';
 import { ProductsEditInterface } from '../interfaces/products-edit.interface';
-
-import { getProduct } from '../queries';
 
 interface ProductsEditContainerProps {
   params: {
@@ -12,11 +12,19 @@ interface ProductsEditContainerProps {
 export async function ProductsEditContainer({
   params,
 }: ProductsEditContainerProps) {
-  const product = await getProduct(params);
+  const [product, categories, discounts] = await Promise.all([
+    getProduct(params),
+    getCategories(),
+    getDiscounts(),
+  ]);
 
   return (
     <DashboardLayout>
-      <ProductsEditInterface product={product} />
+      <ProductsEditInterface
+        product={product}
+        categories={categories}
+        discounts={discounts?.discounts}
+      />
     </DashboardLayout>
   );
 }
