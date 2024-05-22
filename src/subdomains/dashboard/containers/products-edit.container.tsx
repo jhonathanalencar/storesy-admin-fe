@@ -13,11 +13,10 @@ export async function ProductsEditContainer({
   params,
 }: ProductsEditContainerProps) {
   const product = await getProduct(params);
-  console.log(product);
 
   return (
     <DashboardLayout>
-      <ProductsEditInterface />
+      <ProductsEditInterface product={product} />
     </DashboardLayout>
   );
 }

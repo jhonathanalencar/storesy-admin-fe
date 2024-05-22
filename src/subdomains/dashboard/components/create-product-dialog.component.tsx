@@ -10,6 +10,8 @@ import { styles } from '@shared/configs/react-select-styles.config';
 import type { TCategory, TDiscount } from '../types';
 import { addProductAction } from '../actions';
 
+import { FormField } from './form-field.component';
+
 const formSchema = z.object({
   name: z
     .string({ required_error: 'name is required' })
@@ -151,75 +153,60 @@ export function CreateProductDialog({
         <Dialog.Description className="mt-1 text-sm text-zinc-400">
           Create a new product here. Click save when you&apos;re done.
         </Dialog.Description>
-        <form onSubmit={handleSubmit(handleOnSubmit)} action="">
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="name" className="font-medium text-zinc-300">
-              Name
-            </label>
-            <input
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <FormField.Root>
+            <FormField.Label htmlFor="name">Name</FormField.Label>
+            <FormField.Input
               id="name"
               type="text"
               aria-invalid={!!errors.name}
               aria-describedby="name-hint"
               required
               disabled={isSubmitting}
-              className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('name')}
             />
             {errors.name ? (
-              <p role="alert" id="name-hint" className="text-sm text-red-500">
+              <FormField.Error id="name-hint">
                 {errors.name.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="description" className="font-medium text-zinc-300">
-              Description
-            </label>
-            <input
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="description">Description</FormField.Label>
+            <FormField.Input
               id="description"
               type="text"
               aria-invalid={!!errors.description}
               aria-describedby="description-hint"
               required
               disabled={isSubmitting}
-              className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('description')}
             />
             {errors.description ? (
-              <p
-                role="alert"
-                id="description-hint"
-                className="text-sm text-red-500"
-              >
+              <FormField.Error id="description-hint">
                 {errors.description.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="price" className="font-medium text-zinc-300">
-              Price
-            </label>
-            <input
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="price">Price</FormField.Label>
+            <FormField.Input
               id="price"
               type="text"
               aria-invalid={!!errors.price}
               aria-describedby="price-hint"
               required
               disabled={isSubmitting}
-              className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('price', { valueAsNumber: true })}
             />
             {errors.price ? (
-              <p role="alert" id="price-hint" className="text-sm text-red-500">
+              <FormField.Error id="price-hint">
                 {errors.price.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="categories" className="font-medium text-zinc-300">
-              Categories
-            </label>
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="categories">Categories</FormField.Label>
             <Controller
               control={control}
               name="categories"
@@ -283,43 +270,30 @@ export function CreateProductDialog({
               )}
             />
             {errors.categories ? (
-              <p
-                role="alert"
-                id="categories-hint"
-                className="text-sm text-red-500"
-              >
+              <FormField.Error id="categories-hint">
                 {errors.categories.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="image-url" className="font-medium text-zinc-300">
-              Image URL
-            </label>
-            <input
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="image-url">Image URL</FormField.Label>
+            <FormField.Input
               id="image-url"
               type="url"
               aria-invalid={!!errors.imageUrl}
               aria-describedby="image-url-hint"
               required
               disabled={isSubmitting}
-              className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('imageUrl')}
             />
             {errors.imageUrl ? (
-              <p
-                role="alert"
-                id="image-url-hint"
-                className="text-sm text-red-500"
-              >
+              <FormField.Error id="image-url-hint">
                 {errors.imageUrl.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="discount" className="font-medium text-zinc-300">
-              Discount
-            </label>
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="discount">Discount</FormField.Label>
             <Controller
               control={control}
               name="discount"
@@ -382,44 +356,33 @@ export function CreateProductDialog({
               )}
             />
             {errors.discount ? (
-              <p
-                role="alert"
-                id="discount-hint"
-                className="text-sm text-red-500"
-              >
+              <FormField.Error id="discount-hint">
                 {errors.discount.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
-          <div className="mt-3 flex flex-col gap-1">
-            <label htmlFor="quantity" className="font-medium text-zinc-300">
-              Quantity
-            </label>
-            <input
+          </FormField.Root>
+          <FormField.Root>
+            <FormField.Label htmlFor="quantity">Quantity</FormField.Label>
+            <FormField.Input
               id="quantity"
               type="number"
               aria-invalid={!!errors.quantity}
               aria-describedby="quantity-hint"
               required
               disabled={isSubmitting}
-              className="h-10 rounded bg-zinc-950 px-2 font-normal text-zinc-500 outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
               {...register('quantity', { valueAsNumber: true })}
             />
             {errors.quantity ? (
-              <p
-                role="alert"
-                id="quantity-hint"
-                className="text-sm text-red-500"
-              >
+              <FormField.Error id="quantity-hint">
                 {errors.quantity.message}
-              </p>
+              </FormField.Error>
             ) : null}
-          </div>
+          </FormField.Root>
           <div className="mt-6 flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting || !isValid}
-              className="rounded bg-green-400 px-6 py-3 text-sm font-bold uppercase text-zinc-900 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+              className="rounded bg-green-400 px-6 py-3 text-sm font-bold uppercase text-zinc-900 outline-none hover:bg-green-500 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-green-400"
             >
               Save
             </button>
