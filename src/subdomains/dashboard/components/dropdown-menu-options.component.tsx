@@ -33,7 +33,7 @@ export function DropdownMenuOptions({
       <DropdownMenu.Content>
         <DropdownMenu.Item>
           <Link
-            href="/dashboard/products/edit"
+            href={`/dashboard/products/${productId}/edit`}
             className="flex h-full w-full items-center"
           >
             edit
