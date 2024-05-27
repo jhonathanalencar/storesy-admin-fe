@@ -115,3 +115,30 @@ export async function deleteProduct(input: DeleteProductInput) {
   if (!response.ok) throw new Error('Error deleting product');
   return;
 }
+
+export type UpdateProductInput = {
+  productId: string;
+  name: string;
+  description: string;
+  summary: string;
+  price: number;
+  categories: string[];
+  imageUrl: string;
+  quantity: number;
+  discountId?: string;
+};
+
+export async function updateProduct(input: UpdateProductInput) {
+  const response = await fetch(
+    `${process.env.CATALOG_API_URL}/products/${input.productId}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+    }
+  );
+  if (!response.ok) throw new Error('Error updating product');
+  return;
+}
