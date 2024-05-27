@@ -6,10 +6,11 @@ import type {
 import colors from 'tailwindcss/colors';
 
 export const styles = {
-  control: (styles: CSSObjectWithLabel) => ({
+  control: (styles: CSSObjectWithLabel, { isDisabled }) => ({
     ...styles,
     backgroundColor: colors.zinc[950],
     borderColor: colors.zinc[700],
+    opacity: isDisabled ? 0.7 : 1,
     ':focus-within': {
       borderColor: colors.green[400],
       boxShadow: '0 0 0 1px #4ade80',
