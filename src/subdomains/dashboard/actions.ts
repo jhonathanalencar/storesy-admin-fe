@@ -8,9 +8,11 @@ import {
   AddProductInput,
   DeleteProductInput,
   ReleaseProductInput,
+  UpdateProductInput,
   addProduct,
   deleteProduct,
   releaseProduct,
+  updateProduct,
 } from './queries';
 
 export async function signOutAction() {
@@ -90,4 +92,16 @@ export async function deleteSelectedProductsAction(data: DeleteProductInput[]) {
     };
   }
   revalidatePath('/dashboard/products');
+}
+
+export async function updateProductAction(data: UpdateProductInput) {
+  try {
+    await updateProduct(data);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: { message: 'Failed to update products' },
+    };
+  }
+  redirect('/dashboard/products');
 }
