@@ -1,6 +1,7 @@
 'use client';
 
 import type { TCategory, TDiscount, TProduct } from '../types';
+import { updateProductAction } from '../actions';
 
 import { FormInputs, ProductForm } from '../components/product-form.component';
 
@@ -16,7 +17,30 @@ export function ProductsEditInterface({
   categories,
 }: ProductsEditInterfaceProps) {
   async function handleOnSubmit(data: FormInputs) {
-    console.log(data);
+    if (!product) return;
+    const description = data.description;
+    const summary =
+      description.length < 100
+        ? description
+        : `${description.substring(0, 100)}...`;
+    const categories = data.categories.map((category) => category.value);
+    const discountId = data.discount.value;
+    const result = await updateProductAction({
+      productId: product.productId,
+      name: data.name,
+      price: data.price,
+      quantity: data.quantity,
+      imageUrl: data.imageUrl,
+      description,
+      summary,
+      categories,
+      discountId,
+    });
+    if (result?.error) {
+      alert(result.error.message);
+      return;
+    }
+    alert('Product updated');
   }
 
   return (
